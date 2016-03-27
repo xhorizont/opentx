@@ -80,7 +80,7 @@ void stop5msTimer( void )
 }
 
 // TODO use the same than board_sky9x.cpp
-void interrupt5ms()
+void interrupt1ms()
 {
   static uint32_t pre_scale ;       // Used to get 10 Hz counter
 
@@ -106,7 +106,8 @@ void interrupt5ms()
 extern "C" void TIM8_TRG_COM_TIM14_IRQHandler()
 {
   TIM14->SR &= ~TIM_SR_UIF ;
-  interrupt5ms() ;
+  interrupt1ms() ;
+  DEBUG_INTERRUPT(INT_1MS);
 }
 
 void boardInit()
