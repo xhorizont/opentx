@@ -165,3 +165,41 @@ void CoTaskSwitchHook(uint8_t taskID)
 }
 
 #endif // #if defined(DEBUG_TASKS)
+
+#if defined(DEBUG_TIMERS)
+
+void DebugTimer::start()
+{
+  _start_hiprec = getTmr2MHz();
+  _start_loprec = get_tmr10ms();
+}
+
+void DebugTimer::stop()
+{
+  // getTmr2MHz is 16 bit timer, resolution 0.5us, max measurable value 32.7675 milli seconds
+  // tmr10ms_t tmr10ms = get_tmr10ms(); 32 bit timer, resolution 10ms, max measurable value: 42949672.95 s = 1.3 years
+  // if time difference is bigger than 30ms, then use low resolution timer
+  // otherwise use high resolution
+  if ((_start_hiprec == 0) && (_start_loprec == 0)) return;
+
+  last = get_tmr10ms() - _start_loprec;  //use low precision timer
+  if (last < 3) {
+    //use high precision
+    last = (uint16_t)(getTmr2MHz() - _start_hiprec) / 2;
+  }
+  else {
+    last *= 10000ul; //adjust unit to 1us
+  }
+  evalStats(); 
+}
+
+DebugTimer debugTimerIntPulses;
+DebugTimer debugTimerIntPulsesDuration;
+DebugTimer debugTimerPer10ms;
+DebugTimer debugTimerRotEnc;
+DebugTimer debugTimerHaptic;
+DebugTimer debugTimerMixer1;
+DebugTimer debugTimerMixer2;
+DebugTimer debugTimerTelemetryWakeup;
+
+#endif

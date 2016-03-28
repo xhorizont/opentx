@@ -58,8 +58,8 @@ void init2MhzTimer()
   TIMER_2MHz_TIMER->CR1 = TIM_CR1_CEN;
 }
 
-// Starts TIMER at 200Hz, 5mS period
-void init5msTimer()
+// Starts TIMER at 1000Hz, 1mS period
+void init1msTimer()
 {
   INTERRUPT_5MS_TIMER->ARR = 999 ;     // 1mS
   INTERRUPT_5MS_TIMER->PSC = (PERI1_FREQUENCY * TIMER_MULT_APB1) / 1000000 - 1 ;  // 1uS from 30MHz
@@ -72,12 +72,12 @@ void init5msTimer()
   NVIC_SetPriority(TIM8_TRG_COM_TIM14_IRQn, 7);
 }
 
-void stop5msTimer( void )
-{
-  TIM14->CR1 = 0 ;        // stop timer
-  NVIC_DisableIRQ(TIM8_TRG_COM_TIM14_IRQn) ;
-  RCC->APB1ENR &= ~RCC_APB1ENR_TIM14EN ;          // Disable clock
-}
+// void stop5msTimer( void )
+// {
+//   TIM14->CR1 = 0 ;        // stop timer
+//   NVIC_DisableIRQ(TIM8_TRG_COM_TIM14_IRQn) ;
+//   RCC->APB1ENR &= ~RCC_APB1ENR_TIM14EN ;          // Disable clock
+// }
 
 // TODO use the same than board_sky9x.cpp
 void interrupt1ms()
@@ -89,17 +89,23 @@ void interrupt1ms()
   if (pre_scale == 5 || pre_scale == 10) {
 
 #if defined(HAPTIC)
+    DEBUG_TIMER_START(debugTimerHaptic);
     HAPTIC_HEARTBEAT();
+    DEBUG_TIMER_STOP(debugTimerHaptic);
 #endif
 
   }
 
   if ( pre_scale == 10 ) {
     pre_scale = 0 ;
+    DEBUG_TIMER_START(debugTimerPer10ms);
     per10ms();
+    DEBUG_TIMER_STOP(debugTimerPer10ms);
   }
 
+  DEBUG_TIMER_START(debugTimerRotEnc);
   checkRotaryEncoder();
+  DEBUG_TIMER_STOP(debugTimerRotEnc);
 }
 
 #if !defined(SIMU)
@@ -156,7 +162,7 @@ void boardInit()
   lcdInit();
   audioInit();
   init2MhzTimer();
-  init5msTimer();
+  init1msTimer();
   usbInit();
   hapticInit();
 
