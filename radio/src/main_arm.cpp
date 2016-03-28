@@ -210,7 +210,11 @@ void guiMain(evt_t evt)
 
   if (!refreshNeeded) {
     DEBUG_TIMER_START(debugTimerMenus);
+    uint32_t cnt = 0;
     while (1) {
+      if (++cnt == 3) {
+        TRACE("Menus loop!!!");
+      }
       // normal GUI from menus
       const char * warn = warningText;
       uint8_t menu = popupMenuNoItems;
@@ -247,7 +251,9 @@ void guiMain(evt_t evt)
           }
           popupDisplayed = false;
         }
+        DEBUG_TIMER_START(debugTimerMenuHandlers);
         refreshNeeded = menuHandlers[menuLevel](evt);
+        DEBUG_TIMER_STOP(debugTimerMenuHandlers);
       }
 
       if (menuEvent == EVT_ENTRY) {

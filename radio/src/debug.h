@@ -310,6 +310,11 @@ extern DebugTimer debugTimerLcdRefreshWait;
 extern DebugTimer debugTimerLuaFg;
 extern DebugTimer debugTimerLcdRefresh;
 extern DebugTimer debugTimerMenus;
+extern DebugTimer debugTimerMenuHandlers;
+extern DebugTimer debugTimerVersion;
+extern DebugTimer debugTimerSimpleMenu;
+extern DebugTimer debugTimerDrawText;
+extern DebugTimer debugTimerDrawText1;
 
 #endif // #if defined(__cplusplus)
 

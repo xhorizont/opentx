@@ -209,5 +209,10 @@ DebugTimer debugTimerLcdRefreshWait;
 DebugTimer debugTimerLuaFg;
 DebugTimer debugTimerLcdRefresh;
 DebugTimer debugTimerMenus;
+DebugTimer debugTimerMenuHandlers;
+DebugTimer debugTimerVersion;
+DebugTimer debugTimerSimpleMenu;
+DebugTimer debugTimerDrawText;
+DebugTimer debugTimerDrawText1;
 
 #endif

@@ -458,13 +458,19 @@ void printDebugTimers()
   printDebugTimer("Tel. wakeup", debugTimerTelemetryWakeup);
   serialPrint("----------");
   printDebugTimer("perMain dur", debugTimerPerMain);
-  printDebugTimer("perMain s1 ", debugTimerPerMain1);
-  printDebugTimer("guiMain dur", debugTimerGuiMain);
-  printDebugTimer("LCD wait   ", debugTimerLcdRefreshWait);
-  printDebugTimer("LCD refresh", debugTimerLcdRefresh);
-  printDebugTimer("LUA bg     ", debugTimerLuaBg);
-  printDebugTimer("LUA fg     ", debugTimerLuaFg);
-  printDebugTimer("Menus      ", debugTimerMenus);
+  printDebugTimer(" perMain s1", debugTimerPerMain1);
+  printDebugTimer(" guiMain   ", debugTimerGuiMain);
+  printDebugTimer("  LUA bg   ", debugTimerLuaBg);
+  printDebugTimer("  LCD wait ", debugTimerLcdRefreshWait);
+  printDebugTimer("  LUA fg   ", debugTimerLuaFg);
+  printDebugTimer("  Menus    ", debugTimerMenus);
+  printDebugTimer("   Menu hnd", debugTimerMenuHandlers);
+  printDebugTimer("  LCD refr.", debugTimerLcdRefresh);
+  serialPrint("----------");
+  printDebugTimer("Menu Vers. ", debugTimerVersion);
+  printDebugTimer("Menu simple", debugTimerSimpleMenu);
+  printDebugTimer("Menu drawte", debugTimerDrawText);
+  printDebugTimer("Menu drawt1", debugTimerDrawText1);
 }
 #endif
 
@@ -681,6 +687,7 @@ const CliCommand cliCommands[] = {
   { "readsd", cliReadSD, "<start sector> <sectors count> <read buffer size (sectors)>" },
   { "play", cliPlay, "<filename>" },
   { "print", cliDisplay, "<address> [<size>] | <what>" },
+  { "p", cliDisplay, "<address> [<size>] | <what>" },
   { "reboot", cliReboot, "[wdt]" },
   { "set", cliSet, "<what> <value>" },
   { "stackinfo", cliStackInfo, "" },
