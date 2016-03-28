@@ -152,7 +152,9 @@ void menusTask(void * pdata)
   while (pwrCheck() != e_power_off) {
 #endif
     uint32_t start = (uint32_t)CoGetOSTime();
+    DEBUG_TIMER_START(debugTimerPerMain);
     perMain();
+    DEBUG_TIMER_STOP(debugTimerPerMain);
     // TODO remove completely massstorage from sky9x firmware
     uint32_t runtime = ((uint32_t)CoGetOSTime() - start);
     // deduct the thread run-time from the wait, if run-time was more than

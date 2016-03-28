@@ -201,5 +201,13 @@ DebugTimer debugTimerHaptic;
 DebugTimer debugTimerMixer1;
 DebugTimer debugTimerMixer2;
 DebugTimer debugTimerTelemetryWakeup;
+DebugTimer debugTimerPerMain;
+DebugTimer debugTimerPerMain1;
+DebugTimer debugTimerGuiMain;
+DebugTimer debugTimerLuaBg;
+DebugTimer debugTimerLcdRefreshWait;
+DebugTimer debugTimerLuaFg;
+DebugTimer debugTimerLcdRefresh;
+DebugTimer debugTimerMenus;
 
 #endif

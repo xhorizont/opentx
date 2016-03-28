@@ -456,6 +456,15 @@ void printDebugTimers()
   printDebugTimer("Mixer outer", debugTimerMixer1);
   printDebugTimer("Mixer inner", debugTimerMixer2);
   printDebugTimer("Tel. wakeup", debugTimerTelemetryWakeup);
+  serialPrint("----------");
+  printDebugTimer("perMain dur", debugTimerPerMain);
+  printDebugTimer("perMain s1 ", debugTimerPerMain1);
+  printDebugTimer("guiMain dur", debugTimerGuiMain);
+  printDebugTimer("LCD wait   ", debugTimerLcdRefreshWait);
+  printDebugTimer("LCD refresh", debugTimerLcdRefresh);
+  printDebugTimer("LUA bg     ", debugTimerLuaBg);
+  printDebugTimer("LUA fg     ", debugTimerLuaFg);
+  printDebugTimer("Menus      ", debugTimerMenus);
 }
 #endif
 

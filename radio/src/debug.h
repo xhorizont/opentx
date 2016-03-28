@@ -302,6 +302,14 @@ extern DebugTimer debugTimerHaptic;
 extern DebugTimer debugTimerMixer1;
 extern DebugTimer debugTimerMixer2;
 extern DebugTimer debugTimerTelemetryWakeup;
+extern DebugTimer debugTimerPerMain;
+extern DebugTimer debugTimerPerMain1;
+extern DebugTimer debugTimerGuiMain;
+extern DebugTimer debugTimerLuaBg;
+extern DebugTimer debugTimerLcdRefreshWait;
+extern DebugTimer debugTimerLuaFg;
+extern DebugTimer debugTimerLcdRefresh;
+extern DebugTimer debugTimerMenus;
 
 #endif // #if defined(__cplusplus)
 
