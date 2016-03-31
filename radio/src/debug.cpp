@@ -215,4 +215,9 @@ DebugTimer debugTimerSimpleMenu;
 DebugTimer debugTimerDrawText;
 DebugTimer debugTimerDrawText1;
 
+DebugTimer debugTimerGetAdc;
+DebugTimer debugTimerGetSwitches;
+DebugTimer debugTimerEvalMixes;
+DebugTimer debugTimerMixes10ms;
+
 #endif

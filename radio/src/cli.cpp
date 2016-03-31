@@ -471,6 +471,11 @@ void printDebugTimers()
   printDebugTimer("Menu simple", debugTimerSimpleMenu);
   printDebugTimer("Menu drawte", debugTimerDrawText);
   printDebugTimer("Menu drawt1", debugTimerDrawText1);
+  serialPrint("----------");
+  printDebugTimer("Mix ADC    ", debugTimerGetAdc);
+  printDebugTimer("Mix getsw  ", debugTimerGetSwitches);
+  printDebugTimer("Mix eval   ", debugTimerEvalMixes);
+  printDebugTimer("Mix 10ms   ", debugTimerMixes10ms);
 }
 #endif
 

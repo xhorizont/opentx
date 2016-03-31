@@ -1773,13 +1773,17 @@ void doMixerCalculations()
   // therefore forget the exact calculation and use only 1 instead; good compromise
   lastTMR = tmr10ms;
 
+  DEBUG_TIMER_START(debugTimerGetAdc);
   getADC();
+  DEBUG_TIMER_STOP(debugTimerGetAdc);
 
 #if defined(PCBTARANIS)
   processSbusInput();
 #endif
 
+  DEBUG_TIMER_START(debugTimerGetSwitches);
   getSwitchesPosition(!s_mixer_first_run_done);
+  DEBUG_TIMER_STOP(debugTimerGetSwitches);
 
 #if defined(PCBSKY9X) && !defined(REVA) && !defined(SIMU)
   Current_analogue = (Current_analogue*31 + s_anaFilt[8] ) >> 5 ;
@@ -1791,13 +1795,16 @@ void doMixerCalculations()
   adcPrepareBandgap();
 #endif
 
+  DEBUG_TIMER_START(debugTimerEvalMixes);
   evalMixes(tick10ms);
+  DEBUG_TIMER_STOP(debugTimerEvalMixes);
 
 #if !defined(CPUARM)
   // Bandgap has had plenty of time to settle...
   getADC_bandgap();
 #endif
 
+  DEBUG_TIMER_START(debugTimerMixes10ms);
   if (tick10ms) {
 
 #if !defined(CPUM64) && !defined(ACCURAT_THROTTLE_TIMER)
@@ -1942,6 +1949,7 @@ void doMixerCalculations()
     checkTrims();
 #endif
   }
+  DEBUG_TIMER_STOP(debugTimerMixes10ms);
 
   s_mixer_first_run_done = true;
 }

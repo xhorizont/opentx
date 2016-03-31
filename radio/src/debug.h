@@ -316,6 +316,11 @@ extern DebugTimer debugTimerSimpleMenu;
 extern DebugTimer debugTimerDrawText;
 extern DebugTimer debugTimerDrawText1;
 
+extern DebugTimer debugTimerGetAdc;
+extern DebugTimer debugTimerGetSwitches;
+extern DebugTimer debugTimerEvalMixes;
+extern DebugTimer debugTimerMixes10ms;
+
 #endif // #if defined(__cplusplus)
 
 #define DEBUG_TIMER_START(timer)  timer.start()
