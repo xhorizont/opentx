@@ -327,6 +327,9 @@ enum DebugTimers {
 
   debugTimerDelay1ms,
 
+  debugTimerMixerCalcToUsage,
+  debugTimerMixerIterval,
+
   DEBUG_TIMERS_COUNT
 };
 

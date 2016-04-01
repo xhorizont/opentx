@@ -225,6 +225,8 @@ const char * debugTimerNames[DEBUG_TIMERS_COUNT] = {
   ,"ADC loop   "   // debugTimerAdcLoop,
   ,"ADC wait   "   // debugTimerAdcWait,
   ,"Delay 1ms  "   // debugTimerDelay1ms,
+  ,"mix-pulses "   // debugTimerMixerCalcToUsage
+  ,"mix-int.   "   // debugTimerMixerIterval
 };
 
 #endif
