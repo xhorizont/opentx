@@ -1588,6 +1588,7 @@ void getADC()
   }
 #endif
 
+  DEBUG_TIMER_START(debugTimerAdcRead);
   for (uint8_t i=0; i<4; i++) {
     adcRead();
     for (uint8_t x=0; x<NUMBER_ANALOG; x++) {
@@ -1600,6 +1601,7 @@ void getADC()
       temp[x] += val;
     }
   }
+  DEBUG_TIMER_STOP(debugTimerAdcRead);
 
   for (uint32_t x=0; x<NUMBER_ANALOG; x++) {
     uint16_t v = temp[x] >> (3 - ANALOG_SCALE);

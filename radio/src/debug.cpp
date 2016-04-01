@@ -220,4 +220,10 @@ DebugTimer debugTimerGetSwitches;
 DebugTimer debugTimerEvalMixes;
 DebugTimer debugTimerMixes10ms;
 
+DebugTimer debugTimerAdcRead;
+DebugTimer debugTimerAdcLoop;
+DebugTimer debugTimerAdcWait;
+
+DebugTimer debugTimerDelay1ms;
+
 #endif

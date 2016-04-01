@@ -476,6 +476,12 @@ void printDebugTimers()
   printDebugTimer("Mix getsw  ", debugTimerGetSwitches);
   printDebugTimer("Mix eval   ", debugTimerEvalMixes);
   printDebugTimer("Mix 10ms   ", debugTimerMixes10ms);
+  serialPrint("----------");
+  printDebugTimer("ADC read   ", debugTimerAdcRead);
+  printDebugTimer("ADC loop   ", debugTimerAdcLoop);
+  printDebugTimer("ADC wait   ", debugTimerAdcWait);
+  serialPrint("----------");
+  printDebugTimer("Delay 1ms  ", debugTimerDelay1ms);
 }
 #endif
 
@@ -582,6 +588,9 @@ int cliDisplay(const char ** argv)
           break;
         case 2:
           tim = TIM2;
+          break;
+        case 13:
+          tim = TIM13;
           break;
         default:
           return 0;

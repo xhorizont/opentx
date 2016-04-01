@@ -321,6 +321,12 @@ extern DebugTimer debugTimerGetSwitches;
 extern DebugTimer debugTimerEvalMixes;
 extern DebugTimer debugTimerMixes10ms;
 
+extern DebugTimer debugTimerAdcRead;
+extern DebugTimer debugTimerAdcLoop;
+extern DebugTimer debugTimerAdcWait;
+
+extern DebugTimer debugTimerDelay1ms;
+
 #endif // #if defined(__cplusplus)
 
 #define DEBUG_TIMER_START(timer)  timer.start()
