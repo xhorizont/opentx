@@ -176,7 +176,15 @@ void boardInit()
 
   // delay calibration
   DEBUG_TIMER_START(debugTimerDelay1ms);
-  delay_01us(20000);
+  delay_01us(10000);
+  DEBUG_TIMER_STOP(debugTimerDelay1ms);
+
+  DEBUG_TIMER_START(debugTimerDelay1ms);
+  delay_01us(10000);
+  DEBUG_TIMER_STOP(debugTimerDelay1ms);
+
+  DEBUG_TIMER_START(debugTimerDelay1ms);
+  delay_01us(10000);
   DEBUG_TIMER_STOP(debugTimerDelay1ms);
 
 }
