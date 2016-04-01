@@ -448,40 +448,9 @@ void printDebugTimer(const char * name, DebugTimer & timer)
 }
 void printDebugTimers()
 {
-  printDebugTimer("Pulses int.", debugTimerIntPulses);  
-  printDebugTimer("Pulses dur.", debugTimerIntPulsesDuration);
-  printDebugTimer("10ms dur.  ", debugTimerPer10ms);
-  printDebugTimer("Rotary enc.", debugTimerRotEnc);
-  printDebugTimer("Haptic     ", debugTimerHaptic);
-  printDebugTimer("Mixer outer", debugTimerMixer1);
-  printDebugTimer("Mixer inner", debugTimerMixer2);
-  printDebugTimer("Tel. wakeup", debugTimerTelemetryWakeup);
-  serialPrint("----------");
-  printDebugTimer("perMain dur", debugTimerPerMain);
-  printDebugTimer(" perMain s1", debugTimerPerMain1);
-  printDebugTimer(" guiMain   ", debugTimerGuiMain);
-  printDebugTimer("  LUA bg   ", debugTimerLuaBg);
-  printDebugTimer("  LCD wait ", debugTimerLcdRefreshWait);
-  printDebugTimer("  LUA fg   ", debugTimerLuaFg);
-  printDebugTimer("  Menus    ", debugTimerMenus);
-  printDebugTimer("   Menu hnd", debugTimerMenuHandlers);
-  printDebugTimer("  LCD refr.", debugTimerLcdRefresh);
-  serialPrint("----------");
-  printDebugTimer("Menu Vers. ", debugTimerVersion);
-  printDebugTimer("Menu simple", debugTimerSimpleMenu);
-  printDebugTimer("Menu drawte", debugTimerDrawText);
-  printDebugTimer("Menu drawt1", debugTimerDrawText1);
-  serialPrint("----------");
-  printDebugTimer("Mix ADC    ", debugTimerGetAdc);
-  printDebugTimer("Mix getsw  ", debugTimerGetSwitches);
-  printDebugTimer("Mix eval   ", debugTimerEvalMixes);
-  printDebugTimer("Mix 10ms   ", debugTimerMixes10ms);
-  serialPrint("----------");
-  printDebugTimer("ADC read   ", debugTimerAdcRead);
-  printDebugTimer("ADC loop   ", debugTimerAdcLoop);
-  printDebugTimer("ADC wait   ", debugTimerAdcWait);
-  serialPrint("----------");
-  printDebugTimer("Delay 1ms  ", debugTimerDelay1ms);
+  for(int n = 0; n < DEBUG_TIMERS_COUNT; n++) {  
+    printDebugTimer(debugTimerNames[n], debugTimers[n]);  
+  }
 }
 #endif
 

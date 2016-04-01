@@ -293,45 +293,51 @@ public:
   debug_timer_t getLast() const { return last; } 
 };
 
+enum DebugTimers {
+  debugTimerIntPulses,
+  debugTimerIntPulsesDuration,
+  debugTimerPer10ms,
+  debugTimerRotEnc,
+  debugTimerHaptic,
+  debugTimerMixer1,
+  debugTimerMixer2,
+  debugTimerTelemetryWakeup,
+  debugTimerPerMain,
+  debugTimerPerMain1,
+  debugTimerGuiMain,
+  debugTimerLuaBg,
+  debugTimerLcdRefreshWait,
+  debugTimerLuaFg,
+  debugTimerLcdRefresh,
+  debugTimerMenus,
+  debugTimerMenuHandlers,
+  debugTimerVersion,
+  debugTimerSimpleMenu,
+  debugTimerDrawText,
+  debugTimerDrawText1,
 
-extern DebugTimer debugTimerIntPulses;
-extern DebugTimer debugTimerIntPulsesDuration;
-extern DebugTimer debugTimerPer10ms;
-extern DebugTimer debugTimerRotEnc;
-extern DebugTimer debugTimerHaptic;
-extern DebugTimer debugTimerMixer1;
-extern DebugTimer debugTimerMixer2;
-extern DebugTimer debugTimerTelemetryWakeup;
-extern DebugTimer debugTimerPerMain;
-extern DebugTimer debugTimerPerMain1;
-extern DebugTimer debugTimerGuiMain;
-extern DebugTimer debugTimerLuaBg;
-extern DebugTimer debugTimerLcdRefreshWait;
-extern DebugTimer debugTimerLuaFg;
-extern DebugTimer debugTimerLcdRefresh;
-extern DebugTimer debugTimerMenus;
-extern DebugTimer debugTimerMenuHandlers;
-extern DebugTimer debugTimerVersion;
-extern DebugTimer debugTimerSimpleMenu;
-extern DebugTimer debugTimerDrawText;
-extern DebugTimer debugTimerDrawText1;
+  debugTimerGetAdc,
+  debugTimerGetSwitches,
+  debugTimerEvalMixes,
+  debugTimerMixes10ms,
 
-extern DebugTimer debugTimerGetAdc;
-extern DebugTimer debugTimerGetSwitches;
-extern DebugTimer debugTimerEvalMixes;
-extern DebugTimer debugTimerMixes10ms;
+  debugTimerAdcRead,
+  debugTimerAdcLoop,
+  debugTimerAdcWait,
 
-extern DebugTimer debugTimerAdcRead;
-extern DebugTimer debugTimerAdcLoop;
-extern DebugTimer debugTimerAdcWait;
+  debugTimerDelay1ms,
 
-extern DebugTimer debugTimerDelay1ms;
+  DEBUG_TIMERS_COUNT
+};
+
+extern DebugTimer debugTimers[DEBUG_TIMERS_COUNT];
+extern const char * debugTimerNames[DEBUG_TIMERS_COUNT];
 
 #endif // #if defined(__cplusplus)
 
-#define DEBUG_TIMER_START(timer)  timer.start()
-#define DEBUG_TIMER_STOP(timer)   timer.stop()  
-#define DEBUG_TIMER_SAMPLE(timer) timer.sample()
+#define DEBUG_TIMER_START(timer)  debugTimers[timer].start()
+#define DEBUG_TIMER_STOP(timer)   debugTimers[timer].stop()  
+#define DEBUG_TIMER_SAMPLE(timer) debugTimers[timer].sample()
 
 
 #else //#if defined(DEBUG_TIMERS)

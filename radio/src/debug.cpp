@@ -193,37 +193,38 @@ void DebugTimer::stop()
   evalStats(); 
 }
 
-DebugTimer debugTimerIntPulses;
-DebugTimer debugTimerIntPulsesDuration;
-DebugTimer debugTimerPer10ms;
-DebugTimer debugTimerRotEnc;
-DebugTimer debugTimerHaptic;
-DebugTimer debugTimerMixer1;
-DebugTimer debugTimerMixer2;
-DebugTimer debugTimerTelemetryWakeup;
-DebugTimer debugTimerPerMain;
-DebugTimer debugTimerPerMain1;
-DebugTimer debugTimerGuiMain;
-DebugTimer debugTimerLuaBg;
-DebugTimer debugTimerLcdRefreshWait;
-DebugTimer debugTimerLuaFg;
-DebugTimer debugTimerLcdRefresh;
-DebugTimer debugTimerMenus;
-DebugTimer debugTimerMenuHandlers;
-DebugTimer debugTimerVersion;
-DebugTimer debugTimerSimpleMenu;
-DebugTimer debugTimerDrawText;
-DebugTimer debugTimerDrawText1;
+DebugTimer debugTimers[DEBUG_TIMERS_COUNT];
 
-DebugTimer debugTimerGetAdc;
-DebugTimer debugTimerGetSwitches;
-DebugTimer debugTimerEvalMixes;
-DebugTimer debugTimerMixes10ms;
-
-DebugTimer debugTimerAdcRead;
-DebugTimer debugTimerAdcLoop;
-DebugTimer debugTimerAdcWait;
-
-DebugTimer debugTimerDelay1ms;
+const char * debugTimerNames[DEBUG_TIMERS_COUNT] = {
+   "Pulses int."   // debugTimerIntPulses,
+  ,"Pulses dur."   // debugTimerIntPulsesDuration,
+  ,"10ms dur.  "   // debugTimerPer10ms,
+  ,"Rotary enc."   // debugTimerRotEnc,
+  ,"Haptic     "   // debugTimerHaptic,
+  ,"Mixer outer"   // debugTimerMixer1,
+  ,"Mixer inner"   // debugTimerMixer2,
+  ,"Tel. wakeup"   // debugTimerTelemetryWakeup,
+  ,"perMain dur"   // debugTimerPerMain,
+  ," perMain s1"   // debugTimerPerMain1,
+  ," guiMain   "   // debugTimerGuiMain,
+  ,"  LUA bg   "   // debugTimerLuaBg,
+  ,"  LCD wait "   // debugTimerLcdRefreshWait,
+  ,"  LUA fg   "   // debugTimerLuaFg,
+  ,"  LCD refr."   // debugTimerLcdRefresh,
+  ,"  Menus    "   // debugTimerMenus,
+  ,"   Menu hnd"   // debugTimerMenuHandlers,
+  ,"Menu Vers. "   // debugTimerVersion,
+  ,"Menu simple"   // debugTimerSimpleMenu,
+  ,"Menu drawte"   // debugTimerDrawText,
+  ,"Menu drawt1"   // debugTimerDrawText1,
+  ,"Mix ADC    "   // debugTimerGetAdc,
+  ,"Mix getsw  "   // debugTimerGetSwitches,
+  ,"Mix eval   "   // debugTimerEvalMixes,
+  ,"Mix 10ms   "   // debugTimerMixes10ms,
+  ,"ADC read   "   // debugTimerAdcRead,
+  ,"ADC loop   "   // debugTimerAdcLoop,
+  ,"ADC wait   "   // debugTimerAdcWait,
+  ,"Delay 1ms  "   // debugTimerDelay1ms,
+};
 
 #endif
