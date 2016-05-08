@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-#include "../../opentx.h"
+#include "opentx.h"
 
 vertpos_t menuVerticalOffset;
 vertpos_t menuVerticalPosition;
@@ -166,15 +166,6 @@ int checkIncDec(unsigned int event, int val, int i_min, int i_max, unsigned int 
         newval++;
       }
     } while (isValueAvailable && !isValueAvailable(newval) && newval<=i_max);
-
-    if (newval > i_max) {
-      newval = val;
-      killEvents(event);
-      AUDIO_WARNING2();
-    }
-    else {
-      AUDIO_KEYPAD_UP();
-    }
   }
   else if (s_editMode>0 && (event==EVT_KEY_FIRST(KEY_MINUS) || event==EVT_KEY_REPT(KEY_MINUS))) {
     do {
@@ -185,15 +176,6 @@ int checkIncDec(unsigned int event, int val, int i_min, int i_max, unsigned int 
         newval--;
       }
     } while (isValueAvailable && !isValueAvailable(newval) && newval>=i_min);
-
-    if (newval < i_min) {
-      newval = val;
-      killEvents(event);
-      AUDIO_WARNING2();
-    }
-    else {
-      AUDIO_KEYPAD_DOWN();
-    }
   }
 
   if (!READ_ONLY() && i_min==0 && i_max==1 && event==EVT_KEY_BREAK(KEY_ENTER)) {
@@ -229,7 +211,10 @@ int checkIncDec(unsigned int event, int val, int i_min, int i_max, unsigned int 
   if (newval > i_max || newval < i_min) {
     newval = (newval > i_max ? i_max : i_min);
     killEvents(event);
-    AUDIO_WARNING2();
+    AUDIO_KEY_ERROR();
+  }
+  else if (newval != val && !IS_KEY_REPT(event)) {
+    AUDIO_KEY_PRESS();
   }
 
   if (newval != val) {
@@ -237,14 +222,11 @@ int checkIncDec(unsigned int event, int val, int i_min, int i_max, unsigned int 
       bool pause = (newval > val ? !stops.contains(newval+1) : !stops.contains(newval-1));
       if (pause) {
         pauseEvents(event); // delay before auto-repeat continues
-        if (newval>val) // without AUDIO it's optimized, because the 2 sounds are the same
-          AUDIO_KEYPAD_UP();
-        else
-          AUDIO_KEYPAD_DOWN();
       }
     }
     storageDirty(i_flags & (EE_GENERAL|EE_MODEL));
     checkIncDec_Ret = (newval > val ? 1 : -1);
+
   }
   else {
     checkIncDec_Ret = 0;
@@ -423,9 +405,11 @@ void check(const char * name, check_event_t event, uint8_t curr, const MenuHandl
       if (s_editMode > 1) break;
       if (menuHorizontalPosition < 0 && maxcol > 0 && READ_ONLY_UNLOCKED()) {
         l_posHorz = 0;
+        AUDIO_KEY_PRESS();
       }
       else if (READ_ONLY_UNLOCKED()) {
         s_editMode = (s_editMode<=0);
+        AUDIO_KEY_PRESS();
       }
       break;
 
@@ -437,11 +421,13 @@ void check(const char * name, check_event_t event, uint8_t curr, const MenuHandl
     case EVT_KEY_BREAK(KEY_EXIT):
       if (s_editMode > 0) {
         s_editMode = 0;
+        AUDIO_KEY_PRESS();
         break;
       }
 
       if (l_posHorz >= 0 && (COLATTR(l_posVert) & NAVIGATION_LINE_BY_LINE)) {
         l_posHorz = -1;
+        AUDIO_KEY_PRESS();
       }
       else {
         uint8_t posVertInit = MENU_FIRST_LINE_EDIT;
@@ -449,6 +435,7 @@ void check(const char * name, check_event_t event, uint8_t curr, const MenuHandl
           menuVerticalOffset = 0;
           l_posVert = posVertInit;
           l_posHorz = POS_HORZ_INIT(l_posVert);
+          AUDIO_KEY_PRESS();
         }
         else {
           popMenu();
@@ -457,6 +444,8 @@ void check(const char * name, check_event_t event, uint8_t curr, const MenuHandl
       break;
 
     case EVT_KEY_FIRST(KEY_RIGHT):
+      AUDIO_KEY_PRESS();
+      // no break
     case EVT_KEY_REPT(KEY_RIGHT):
       if (s_editMode != 0) break;
       if ((COLATTR(l_posVert) & NAVIGATION_LINE_BY_LINE)) {
@@ -485,6 +474,8 @@ void check(const char * name, check_event_t event, uint8_t curr, const MenuHandl
       break;
 
     case EVT_KEY_FIRST(KEY_LEFT):
+      AUDIO_KEY_PRESS();
+      // no break
     case EVT_KEY_REPT(KEY_LEFT):
       if (s_editMode != 0) break;
       if ((COLATTR(l_posVert) & NAVIGATION_LINE_BY_LINE)) {

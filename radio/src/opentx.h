@@ -897,7 +897,7 @@ extern uint8_t trimsDisplayTimer;
 extern uint8_t trimsDisplayMask;
 #endif
 
-void flightReset();
+void flightReset(uint8_t check=true);
 
 extern uint8_t unexpectedShutdown;
 
@@ -1326,7 +1326,7 @@ uint16_t crc16(const uint8_t * ptr, uint32_t len);
 #define PLAY_INCREMENT(x)         ((uint8_t)(((uint8_t)x) << 6))   /* -1, 0, 1, 2 */
 
 enum AUDIO_SOUNDS {
-    AU_TADA,
+    AUDIO_HELLO,
 #if defined(CPUARM)
     AU_BYE,
 #endif
@@ -1338,14 +1338,6 @@ enum AUDIO_SOUNDS {
     AU_TX_BATTERY_LOW,
     AU_INACTIVITY,
 #if defined(CPUARM)
-    AU_A1_ORANGE,
-    AU_A1_RED,
-    AU_A2_ORANGE,
-    AU_A2_RED,
-    AU_A3_ORANGE,
-    AU_A3_RED,
-    AU_A4_ORANGE,
-    AU_A4_RED,
     AU_RSSI_ORANGE,
     AU_RSSI_RED,
     AU_SWR_RED,
@@ -1355,37 +1347,33 @@ enum AUDIO_SOUNDS {
     AU_TRAINER_BACK,
     AU_SENSOR_LOST,
     AU_SERVO_KO,
+    AU_RX_OVERLOAD,
 #endif
 #if defined(PCBSKY9X)
     AU_TX_MAH_HIGH,
     AU_TX_TEMP_HIGH,
 #endif
     AU_ERROR,
-    AU_KEYPAD_UP,
-    AU_KEYPAD_DOWN,
-    AU_MENUS,
-    AU_TRIM_MOVE,
     AU_WARNING1,
     AU_WARNING2,
     AU_WARNING3,
     AU_TRIM_MIDDLE,
 #if defined(CPUARM)
-    AU_TRIM_END,
+    AU_TRIM_MIN,
+    AU_TRIM_MAX,
 #endif
-#if defined(PCBTARANIS) || defined(PCBFLAMENCO) || defined(PCBHORUS)
+#if defined(CPUARM)
     AU_STICK1_MIDDLE,
     AU_STICK2_MIDDLE,
     AU_STICK3_MIDDLE,
     AU_STICK4_MIDDLE,
+#endif
+#if defined(PCBTARANIS) || defined(PCBFLAMENCO) || defined(PCBHORUS)
     AU_POT1_MIDDLE,
     AU_POT2_MIDDLE,
     AU_SLIDER1_MIDDLE,
     AU_SLIDER2_MIDDLE,
 #elif defined(CPUARM)
-    AU_STICK1_MIDDLE,
-    AU_STICK2_MIDDLE,
-    AU_STICK3_MIDDLE,
-    AU_STICK4_MIDDLE,
     AU_POT1_MIDDLE,
     AU_POT2_MIDDLE,
     AU_POT3_MIDDLE,

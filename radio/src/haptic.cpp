@@ -97,8 +97,6 @@ void hapticQueue::event(uint8_t e)
   if (g_eeGeneral.hapticMode>0 || (g_eeGeneral.hapticMode==0 && e>=AU_WARNING1) || (g_eeGeneral.hapticMode>=-1 && e<=AU_ERROR)) {
     if (e <= AU_ERROR)
       play(15, 3, PLAY_NOW);
-    else if (e <= AU_TRIM_MOVE)
-      play(5, 0, PLAY_NOW);
     else if (e <= AU_TIMER_LT10)
       play(15, 3, PLAY_NOW);
     else if (e < AU_SPECIAL_SOUND_FIRST)

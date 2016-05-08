@@ -441,7 +441,7 @@ PACK(struct TimerData {
   uint32_t countdownBeep:2;
   uint32_t minuteBeep:1;
   uint32_t persistent:2;
-  uint32_t spare:3;
+  uint8_t countdownStart:3;
   NOBACKUP(char name[LEN_TIMER_NAME]);
 });
 #elif defined(CPUM2560)

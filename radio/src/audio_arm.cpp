@@ -139,14 +139,6 @@ const char * const audioFilenames[] = {
   "baddata",
   "lowbatt",
   "inactiv",
-  "a1_org",
-  "a1_red",
-  "a2_org",
-  "a2_red",
-  "a3_org",
-  "a3_red",
-  "a4_org",
-  "a4_red",
   "rssi_org",
   "rssi_red",
   "swr_red",
@@ -156,20 +148,18 @@ const char * const audioFilenames[] = {
   "trainok",
   "sensorko",
   "servoko",
+  "rxko",
 #if defined(PCBSKY9X)
   "highmah",
   "hightemp",
 #endif
   "error",
-  "keyup", // TODO remove this one
-  "keydown", // TODO remove this one
-  "menus", // TODO remove this one
-  "trim", // TODO remove this one
   "warning1",
   "warning2",
   "warning3",
   "midtrim",
-  "endtrim",
+  "mintrim",
+  "maxtrim",
   "midstck1",
   "midstck2",
   "midstck3",
@@ -505,13 +495,13 @@ void audioTask(void * pdata)
   setSampleRate(AUDIO_SAMPLE_RATE);
 
 #if !defined(EEPROM)
-  AUDIO_TADA();
+  AUDIO_HELLO();
 #elif defined(SDCARD)
   if (!unexpectedShutdown) {
 #if defined(EEPROM)
     sdInit();
 #endif
-    AUDIO_TADA();
+    AUDIO_HELLO();
   }
 #endif
 
@@ -995,7 +985,47 @@ void audioPlay(unsigned int index, uint8_t id)
   }
 }
 
-void audioEvent(unsigned int index, unsigned int freq)
+void audioKeyPress()
+{
+  if (g_eeGeneral.beepMode == e_mode_all) {
+    audioQueue.playTone(BEEP_DEFAULT_FREQ, 40, 20, PLAY_NOW);
+  }
+
+  if (g_eeGeneral.hapticMode == e_mode_all) {
+    haptic.play(5, 0, PLAY_NOW);
+  }
+}
+
+void audioKeyError()
+{
+  if (g_eeGeneral.beepMode == e_mode_all) {
+    audioQueue.playTone(BEEP_DEFAULT_FREQ, 160, 20, PLAY_NOW);
+  }
+
+  if (g_eeGeneral.hapticMode == e_mode_all) {
+    haptic.play(15, 3, PLAY_NOW);
+  }
+}
+
+
+void audioTrimPress(int value)
+{
+  // TODO
+  // AUDIO_BUZZER(audioEvent(AU_TRIM_MOVE), { if (!IS_KEY_FIRST(event)) warble = true; beep(1); })
+
+  if (value > TRIM_MAX)
+    value = TRIM_MAX;
+  if (value < TRIM_MIN)
+    value = TRIM_MIN;
+
+  value <<= 3;
+  value += 120*16;
+  if (g_eeGeneral.beepMode >= e_mode_nokeys) {
+    audioQueue.playTone(value, 40, 20, PLAY_NOW);
+  }
+}
+
+void audioEvent(unsigned int index)
 {
   if (index == AU_NONE)
     return;
@@ -1012,7 +1042,7 @@ void audioEvent(unsigned int index, unsigned int freq)
     }
   }
 
-  if (g_eeGeneral.beepMode > 0 || (g_eeGeneral.beepMode == 0 && index >= AU_TRIM_MOVE) ||
+  if (g_eeGeneral.beepMode > 0 || (g_eeGeneral.beepMode == 0 && index >= AU_ERROR) ||
       (g_eeGeneral.beepMode >= -1 && index <= AU_ERROR)) {
 #if defined(SDCARD)
     char filename[AUDIO_FILENAME_MAXLEN + 1];
@@ -1038,23 +1068,14 @@ void audioEvent(unsigned int index, unsigned int freq)
       case AU_ERROR:
         audioQueue.playTone(BEEP_DEFAULT_FREQ, 200, 20, PLAY_NOW);
         break;
-      case AU_KEYPAD_UP:
-        audioQueue.playTone(BEEP_KEY_UP_FREQ, 80, 20, PLAY_NOW);
-        break;
-      case AU_KEYPAD_DOWN:
-        audioQueue.playTone(BEEP_KEY_DOWN_FREQ, 80, 20, PLAY_NOW);
-        break;
-      case AU_MENUS:
-        audioQueue.playTone(BEEP_DEFAULT_FREQ, 80, 20, PLAY_NOW);
-        break;
-      case AU_TRIM_MOVE:
-        audioQueue.playTone(freq, 40, 20, PLAY_NOW);
-        break;
       case AU_TRIM_MIDDLE:
-        audioQueue.playTone(freq, 80, 20, PLAY_NOW);
+        audioQueue.playTone(120*16, 80, 20, PLAY_NOW);
         break;
-      case AU_TRIM_END:
-        audioQueue.playTone(freq, 80, 20, PLAY_NOW);
+      case AU_TRIM_MIN:
+        audioQueue.playTone(TRIM_MIN*8 + 120*16, 80, 20, PLAY_NOW);
+        break;
+      case AU_TRIM_MAX:
+        audioQueue.playTone(TRIM_MAX*8 + 120*16, 80, 20, PLAY_NOW);
         break;
       case AU_WARNING1:
         audioQueue.playTone(BEEP_DEFAULT_FREQ, 80, 20, PLAY_NOW);
@@ -1100,18 +1121,6 @@ void audioEvent(unsigned int index, unsigned int freq)
         break;
       case AU_TIMER_30:
         audioQueue.playTone(BEEP_DEFAULT_FREQ + 150, 120, 20, PLAY_REPEAT(2) | PLAY_NOW);
-        break;
-      case AU_A1_ORANGE:
-      case AU_A2_ORANGE:
-      case AU_A3_ORANGE:
-      case AU_A4_ORANGE:
-        audioQueue.playTone(BEEP_DEFAULT_FREQ + 600, 200, 20, PLAY_NOW);
-        break;
-      case AU_A1_RED:
-      case AU_A2_RED:
-      case AU_A3_RED:
-      case AU_A4_RED:
-        audioQueue.playTone(BEEP_DEFAULT_FREQ + 600, 200, 20, PLAY_REPEAT(1) | PLAY_NOW);
         break;
       case AU_RSSI_ORANGE:
         audioQueue.playTone(BEEP_DEFAULT_FREQ + 1500, 800, 20, PLAY_NOW);

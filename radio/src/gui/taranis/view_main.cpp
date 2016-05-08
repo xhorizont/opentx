@@ -19,7 +19,6 @@
  */
 
 #include "opentx.h"
-#include "timers.h"
 
 #define BIGSIZE       MIDSIZE
 #define LBOX_CENTERX  (BOX_WIDTH/2 + 16)
@@ -495,7 +494,6 @@ void menuMainView(uint8_t event)
         gvarDisplayTimer = 0;
       }
 #endif
-      AUDIO_KEYPAD_UP();
       break;
   }
 

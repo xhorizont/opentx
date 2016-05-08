@@ -56,7 +56,7 @@ inline void beep(uint8_t) { }
 
 #if defined(BUZZER)
   #if defined(VOICE)
-    #define AUDIO_TADA()           PUSH_SYSTEM_PROMPT(AU_TADA)
+    #define AUDIO_HELLO()           PUSH_SYSTEM_PROMPT(AUDIO_HELLO)
     #define AUDIO_BYE()
     #define AUDIO_TX_BATTERY_LOW() PUSH_SYSTEM_PROMPT(AU_TX_BATTERY_LOW)
     #define AUDIO_INACTIVITY()     PUSH_SYSTEM_PROMPT(AU_INACTIVITY)
@@ -65,7 +65,7 @@ inline void beep(uint8_t) { }
     #define AUDIO_TIMER_30()       PUSH_SYSTEM_PROMPT(AU_TIMER_30)
     #define AUDIO_TIMER_20()       PUSH_SYSTEM_PROMPT(AU_TIMER_20)
   #else
-    #define AUDIO_TADA()
+    #define AUDIO_HELLO()
     #define AUDIO_BYE()
     #define AUDIO_TX_BATTERY_LOW() beep(4)
     #define AUDIO_INACTIVITY()     beep(3)
@@ -94,7 +94,7 @@ inline void beep(uint8_t) { }
 
   #define IS_AUDIO_BUSY() (g_beepCnt || beepAgain || beepOn)
 #else /* BUZZER */
-  #define AUDIO_TADA()
+  #define AUDIO_HELLO()
   #define AUDIO_BYE()
   #define AUDIO_TX_BATTERY_LOW()
   #define AUDIO_INACTIVITY()
