@@ -1,5 +1,7 @@
 NO_ALTERNATE = 1024
 
+import sys
+
 def filename(idx, alternate=0):
     if "gruvin9x" in sys.argv:
         ext = ".ad4"
