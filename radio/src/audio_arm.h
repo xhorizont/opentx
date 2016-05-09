@@ -307,6 +307,7 @@ void audioStart();
 void audioKeyPress();
 void audioKeyError();
 void audioTrimPress(int value);
+void audioTimerCountdown(uint8_t timer, int value);
 
 #define AUDIO_KEY_PRESS()        audioKeyPress()
 #define AUDIO_KEY_ERROR()        audioKeyError()
@@ -321,17 +322,7 @@ void audioTrimPress(int value);
 #define AUDIO_TX_TEMP_HIGH()     audioEvent(AU_TX_TEMP_HIGH)
 #endif
 #define AUDIO_ERROR()            AUDIO_BUZZER(audioEvent(AU_ERROR), beep(4))
-#define AUDIO_TIMER_30()         AUDIO_BUZZER(audioEvent(AU_TIMER_30), { beepAgain=2; beep(2); })
-#define AUDIO_TIMER_20()         AUDIO_BUZZER(audioEvent(AU_TIMER_20), { beepAgain=1; beep(2); })
-
-#if defined(HAPTIC)
-#define AUDIO_TIMER_LT10(m, x)   do { if (m==COUNTDOWN_VOICE) playNumber(x, 0, 0, 0); else if (m==COUNTDOWN_HAPTIC) haptic.event(AU_TIMER_LT10); else AUDIO_BUZZER(audioEvent(AU_TIMER_LT10), beep(2)); } while(0)
-#define AUDIO_TIMER_00(m)        do { if (m==COUNTDOWN_VOICE) playNumber(0, 0, 0, 0); else if (m==COUNTDOWN_HAPTIC) haptic.event(AU_TIMER_00); else AUDIO_BUZZER(audioEvent(AU_TIMER_00), beep(3)); } while(0)
-#else
-#define AUDIO_TIMER_LT10(m, x)   do { if (m==COUNTDOWN_VOICE) playNumber(x, 0, 0, 0); else AUDIO_BUZZER(audioEvent(AU_TIMER_LT10), beep(2)); } while(0)
-#define AUDIO_TIMER_00(m)        do { if (m==COUNTDOWN_VOICE) playNumber(0, 0, 0, 0); else AUDIO_BUZZER(audioEvent(AU_TIMER_00), beep(3)); } while(0)
-#endif
-
+#define AUDIO_TIMER_COUNTDOWN(t, val)  audioTimerCountdown(t, val)
 #define AUDIO_INACTIVITY()       AUDIO_BUZZER(audioEvent(AU_INACTIVITY), beep(3))
 #define AUDIO_MIX_WARNING(x)     AUDIO_BUZZER(audioEvent(AU_MIX_WARNING_1+x-1), beep(1))
 #define AUDIO_POT_MIDDLE(x)      AUDIO_BUZZER(audioEvent(AU_STICK1_MIDDLE+x), beep(2))

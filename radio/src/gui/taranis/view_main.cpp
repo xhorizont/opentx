@@ -2,7 +2,7 @@
  * Copyright (C) OpenTX
  *
  * Based on code named
- *   th9x - http://code.google.com/p/th9x 
+ *   th9x - http://code.google.com/p/th9x
  *   er9x - http://code.google.com/p/er9x
  *   gruvin9x - http://code.google.com/p/gruvin9x
  *
@@ -459,7 +459,7 @@ void menuMainView(uint8_t event)
       POPUP_MENU_ADD_ITEM(STR_RESET_SUBMENU);
       POPUP_MENU_ADD_ITEM(STR_STATISTICS);
       POPUP_MENU_ADD_ITEM(STR_ABOUT_US);
-      popupMenuHandler = onMainViewMenu;
+      POPUP_MENU_START(onMainViewMenu);
       break;
 
 #if MENUS_LOCK != 2/*no menus*/

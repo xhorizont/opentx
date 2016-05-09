@@ -285,7 +285,7 @@ int checkIncDec(evt_t event, int val, int i_min, int i_max, unsigned int i_flags
           }
         }
       }
-      popupMenuHandler = onSourceLongEnterPress;
+      POPUP_MENU_START(onSourceLongEnterPress);
     }
     if (checkIncDecSelection != 0) {
       newval = checkIncDecSelection;
@@ -310,7 +310,7 @@ int checkIncDec(evt_t event, int val, int i_min, int i_max, unsigned int i_flags
       }
       if (isValueAvailable && isValueAvailable(SWSRC_ON))                  POPUP_MENU_ADD_ITEM(STR_MENU_OTHER);
       if (isValueAvailable && isValueAvailable(-newval))                   POPUP_MENU_ADD_ITEM(STR_MENU_INVERT);
-      popupMenuHandler = onSwitchLongEnterPress;
+      POPUP_MENU_START(onSwitchLongEnterPress);
       s_editMode = EDIT_MODIFY_FIELD;
     }
     if (checkIncDecSelection != 0) {

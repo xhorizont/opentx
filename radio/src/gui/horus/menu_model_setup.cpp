@@ -236,7 +236,7 @@ bool menuModelSetup(evt_t event)
         if (attr && event==EVT_KEY_BREAK(KEY_ENTER) && READ_ONLY_UNLOCKED()) {
           s_editMode = 0;
           if (sdListFiles(BITMAPS_PATH, BITMAPS_EXT, sizeof(g_model.header.bitmap), g_model.header.bitmap, LIST_NONE_SD_FILE)) {
-            popupMenuHandler = onModelSetupBitmapMenu;
+            POPUP_MENU_START(onModelSetupBitmapMenu);
           }
           else {
             POPUP_WARNING(STR_NO_BITMAPS_ON_SD);
@@ -529,7 +529,7 @@ bool menuModelSetup(evt_t event)
           }
         }
         break;
-        
+
       case ITEM_MODEL_INTERNAL_MODULE_ANTENNA:
         lcdDrawText(MENUS_MARGIN_LEFT, y, STR_ANTENNASELECTION);
         newAntennaSel = selectMenuItem(MODEL_SETUP_2ND_COLUMN, y, STR_VANTENNATYPES, g_model.moduleData[INTERNAL_MODULE].ppm.pulsePol, 0, 1, attr, event);

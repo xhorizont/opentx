@@ -2,7 +2,7 @@
  * Copyright (C) OpenTX
  *
  * Based on code named
- *   th9x - http://code.google.com/p/th9x 
+ *   th9x - http://code.google.com/p/th9x
  *   er9x - http://code.google.com/p/er9x
  *   gruvin9x - http://code.google.com/p/gruvin9x
  *
@@ -89,7 +89,7 @@ void onSourceLongEnterPress(const char * result)
         break;
       }
     }
-  }  
+  }
 }
 
 void onSwitchLongEnterPress(const char *result)
@@ -231,12 +231,12 @@ int checkIncDec(unsigned int event, int val, int i_min, int i_max, unsigned int 
   else {
     checkIncDec_Ret = 0;
   }
-  
+
   if (i_flags & INCDEC_SOURCE) {
     if (event == EVT_KEY_LONG(KEY_ENTER)) {
       killEvents(event);
       checkIncDecSelection = MIXSRC_NONE;
-      
+
       if (i_min <= MIXSRC_FIRST_INPUT && i_max >= MIXSRC_FIRST_INPUT) {
         if (getFirstAvailable(MIXSRC_FIRST_INPUT, MIXSRC_LAST_INPUT, isInputAvailable) != MIXSRC_NONE) {
           POPUP_MENU_ADD_ITEM(STR_MENU_INPUTS);
@@ -262,7 +262,7 @@ int checkIncDec(unsigned int event, int val, int i_min, int i_max, unsigned int 
       if (i_min <= MIXSRC_FIRST_GVAR && i_max >= MIXSRC_FIRST_GVAR && isValueAvailable(MIXSRC_FIRST_GVAR)) {
         POPUP_MENU_ADD_ITEM(STR_MENU_GVARS);
       }
-      
+
       if (i_min <= MIXSRC_FIRST_TELEM && i_max >= MIXSRC_FIRST_TELEM) {
         for (int i = 0; i < MAX_SENSORS; i++) {
           TelemetrySensor * sensor = & g_model.telemetrySensors[i];
@@ -272,7 +272,7 @@ int checkIncDec(unsigned int event, int val, int i_min, int i_max, unsigned int 
           }
         }
       }
-      popupMenuHandler = onSourceLongEnterPress;
+      POPUP_MENU_START(onSourceLongEnterPress);
     }
     if (checkIncDecSelection != 0) {
       newval = checkIncDecSelection;
@@ -297,7 +297,7 @@ int checkIncDec(unsigned int event, int val, int i_min, int i_max, unsigned int 
       }
       if (isValueAvailable && isValueAvailable(SWSRC_ON))                  POPUP_MENU_ADD_ITEM(STR_MENU_OTHER);
       if (isValueAvailable && isValueAvailable(-newval))                   POPUP_MENU_ADD_ITEM(STR_MENU_INVERT);
-      popupMenuHandler = onSwitchLongEnterPress;
+      POPUP_MENU_START(onSwitchLongEnterPress);
       s_editMode = EDIT_MODIFY_FIELD;
     }
     if (checkIncDecSelection != 0) {
@@ -347,7 +347,7 @@ void check(const char * name, check_event_t event, uint8_t curr, const MenuHandl
           if (modelHasNotes()) {
             POPUP_MENU_ADD_SD_ITEM(STR_VIEW_CHANNELS);
             POPUP_MENU_ADD_ITEM(STR_VIEW_NOTES);
-            popupMenuHandler = onLongMenuPress;
+            POPUP_MENU_START(onLongMenuPress);
           }
           else {
             pushMenu(menuChannelsView);
