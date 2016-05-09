@@ -26,7 +26,7 @@
 # Portuguese : Romolo Manfredini
 # Spanish    : Romolo Manfredini (With the help of Jose Moreno)
 
-from __future__ import print_function
+# from __future__ import print_function
 
 import os
 import sys
