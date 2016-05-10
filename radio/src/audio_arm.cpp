@@ -1015,12 +1015,6 @@ void audioTrimPress(int value)
   if (g_eeGeneral.beepMode >= e_mode_nokeys) {
     audioQueue.playTone(value, 40, 20, PLAY_NOW);
   }
-
-#if defined(HAPTIC)
-    if (g_eeGeneral.hapticMode >= e_mode_nokeys) {
-      haptic.play(5, 0, PLAY_NOW);
-    }
-#endif
 }
 
 void audioTimerCountdown(uint8_t timer, int value)

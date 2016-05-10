@@ -1371,7 +1371,7 @@ uint8_t checkTrim(uint8_t event)
     int16_t after = (k&1) ? before + v : before - v;   // positive = k&1
     bool beepTrim = false;
 
-    if (!thro && sgn(before) != sgn(after)) {
+    if (!thro && after==0 && before!=0) {
       beepTrim = true;
       AUDIO_TRIM_MIDDLE();
       pauseEvents(event);
