@@ -1415,17 +1415,6 @@ uint8_t checkTrim(uint8_t event)
 #endif
     }
 
-#if defined(AUDIO) && !defined(CPUARM)
-    // toneFreq higher/lower according to trim position
-    // limit the frequency, range -125 to 125 = toneFreq: 19 to 101
-    if (after > TRIM_MAX)
-      after = TRIM_MAX;
-    if (after < TRIM_MIN)
-      after = TRIM_MIN;
-    after >>= 2;
-    after += 60;
-#endif
-
     if (!beepTrim) {
       AUDIO_TRIM_PRESS(after);
     }

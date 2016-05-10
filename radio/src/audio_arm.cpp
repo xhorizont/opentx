@@ -1009,14 +1009,7 @@ void audioKeyError()
 
 void audioTrimPress(int value)
 {
-  // TODO
-  // AUDIO_BUZZER(audioEvent(AU_TRIM_MOVE), { if (!IS_KEY_FIRST(event)) warble = true; beep(1); })
-
-  if (value > TRIM_MAX)
-    value = TRIM_MAX;
-  if (value < TRIM_MIN)
-    value = TRIM_MIN;
-
+  value = limit(TRIM_MIN, value, TRIM_MAX);
   value <<= 3;
   value += 120*16;
   if (g_eeGeneral.beepMode >= e_mode_nokeys) {
