@@ -19,7 +19,6 @@
  */
 
 #include "opentx.h"
-#include "timers.h"
 
 RadioData  g_eeGeneral;
 ModelData  g_model;
@@ -1370,24 +1369,20 @@ uint8_t checkTrim(uint8_t event)
     int8_t v = (trimInc==-1) ? min(32, abs(before)/4+1) : (1 << trimInc); // TODO flash saving if (trimInc < 0)
     if (thro) v = 4; // if throttle trim and trim trottle then step=4
     int16_t after = (k&1) ? before + v : before - v;   // positive = k&1
-#if defined(CPUARM)
-    uint8_t beepTrim = 0;
-#else
     bool beepTrim = false;
-#endif
 
     if (!thro && sgn(before) != sgn(after)) {
-      beepTrim = 1;
+      beepTrim = true;
       AUDIO_TRIM_MIDDLE();
       pauseEvents(event);
     }
     else if (before>TRIM_MIN && after<=TRIM_MIN) {
-      beepTrim = 2;
+      beepTrim = true;
       AUDIO_TRIM_MIN();
       killEvents(event);
     }
     else if (before<TRIM_MAX && after>=TRIM_MAX) {
-      beepTrim = 3;
+      beepTrim = true;
       AUDIO_TRIM_MAX();
       killEvents(event);
     }

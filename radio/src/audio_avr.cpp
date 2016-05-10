@@ -2,7 +2,7 @@
  * Copyright (C) OpenTX
  *
  * Based on code named
- *   th9x - http://code.google.com/p/th9x 
+ *   th9x - http://code.google.com/p/th9x
  *   er9x - http://code.google.com/p/er9x
  *   gruvin9x - http://code.google.com/p/gruvin9x
  *
@@ -79,7 +79,7 @@ void audioQueue::heartbeat()
         toneFreq = tone2Freq;
 #endif
         tone2TimeLeft--; //time gets counted down
-      } 
+      }
       else {
         speakerOff();
       }
@@ -128,7 +128,7 @@ void audioQueue::play(uint8_t tFreq, uint8_t tLen, uint8_t tPause, uint8_t tFlag
     else {
       tFlags++;
     }
-  
+
     tFlags &= 0x0f;
     if (tFlags) {
       uint8_t next_queueWidx = (t_queueWidx + 1) & (AUDIO_QUEUE_LENGTH-1);
@@ -144,7 +144,7 @@ void audioQueue::play(uint8_t tFreq, uint8_t tLen, uint8_t tPause, uint8_t tFlag
   }
 }
 
-void audioQueue::event(uint8_t e, uint8_t f)
+void audioQueue::event(uint8_t e)
 {
 #if defined(HAPTIC)
   haptic.event(e); //do this before audio to help sync timings
@@ -168,12 +168,12 @@ void audioQueue::event(uint8_t e, uint8_t f)
           }
           break;
 #endif
-        case AU_TRIM_MOVE:
-          play(f, 6, 1, PLAY_NOW);
-          break;
-        case AU_TRIM_MIDDLE:
-          play(f, 10, 2, PLAY_NOW);
-          break;
+        // case AU_TRIM_MOVE:
+        //   play(f, 6, 1, PLAY_NOW);
+        //   break;
+        // case AU_TRIM_MIDDLE:
+        //   play(f, 10, 2, PLAY_NOW);
+        //   break;
         case AU_SPECIAL_SOUND_RING:
           play(BEEP_DEFAULT_FREQ+25, 5, 2, PLAY_REPEAT(10));
           play(BEEP_DEFAULT_FREQ+25, 5, 10, PLAY_REPEAT(1));

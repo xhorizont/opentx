@@ -18,8 +18,7 @@
  * GNU General Public License for more details.
  */
 
-#include "../../opentx.h"
-#include "../../timers.h"
+#include "opentx.h"
 
 #define BIGSIZE       DBLSIZE
 #define LBOX_CENTERX  (LCD_W/4 + 10)
@@ -310,7 +309,7 @@ void menuMainView(uint8_t event)
         g_eeGeneral.view ^= ALTERNATE_VIEW;
 #endif
         storageDirty(EE_GENERAL);
-        AUDIO_KEYPAD_UP();
+        AUDIO_KEY_PRESS();
       }
       break;
 
@@ -366,7 +365,6 @@ void menuMainView(uint8_t event)
     case EVT_KEY_BREAK(KEY_DOWN):
       g_eeGeneral.view = (event == EVT_KEY_BREAK(KEY_UP) ? (view_base == VIEW_COUNT-1 ? 0 : view_base+1) : (view_base == 0 ? VIEW_COUNT-1 : view_base-1));
       storageDirty(EE_GENERAL);
-      AUDIO_KEYPAD_UP();
       break;
 
     case EVT_KEY_STATISTICS:
@@ -404,13 +402,11 @@ void menuMainView(uint8_t event)
       if (view == VIEW_TIMER2) {
         timerReset(1);
       }
-      AUDIO_KEYPAD_UP();
       break;
 
 #if !defined(NAVIGATION_MENUS)
     case EVT_KEY_LONG(KEY_EXIT):
       flightReset();
-      AUDIO_KEYPAD_UP();
       break;
 #endif
   }

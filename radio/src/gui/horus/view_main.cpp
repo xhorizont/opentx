@@ -179,7 +179,6 @@ bool menuMainView(evt_t event)
         gvarDisplayTimer = 0;
       }
 #endif
-      AUDIO_KEYPAD_UP();
       break;
   }
 
