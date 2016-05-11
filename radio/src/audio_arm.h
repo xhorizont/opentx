@@ -322,7 +322,8 @@ void audioTimerCountdown(uint8_t timer, int value);
 #define AUDIO_TX_TEMP_HIGH()     audioEvent(AU_TX_TEMP_HIGH)
 #endif
 #define AUDIO_ERROR()            AUDIO_BUZZER(audioEvent(AU_ERROR), beep(4))
-#define AUDIO_TIMER_COUNTDOWN(t, val)  audioTimerCountdown(t, val)
+#define AUDIO_TIMER_COUNTDOWN(idx, val) audioTimerCountdown(idx, val)
+#define AUDIO_TIMER_ELAPSED(idx) AUDIO_BUZZER(audioEvent(AU_TIMER1_ELAPSED+idx), beep(3))
 #define AUDIO_INACTIVITY()       AUDIO_BUZZER(audioEvent(AU_INACTIVITY), beep(3))
 #define AUDIO_MIX_WARNING(x)     AUDIO_BUZZER(audioEvent(AU_MIX_WARNING_1+x-1), beep(1))
 #define AUDIO_POT_MIDDLE(x)      AUDIO_BUZZER(audioEvent(AU_STICK1_MIDDLE+x), beep(2))

@@ -269,7 +269,9 @@ int16_t checkIncDec(uint8_t event, int16_t val, int16_t i_min, int16_t i_max, ui
     if (!(i_flags & NO_INCDEC_MARKS) && (newval != i_max) && (newval != i_min) && (newval==0 || newval==-100 || newval==+100) && !IS_ROTARY_EVENT(event)) {
       pauseEvents(event); // delay before auto-repeat continues
     }
-    AUDIO_KEY_PRESS();
+    if (!IS_KEY_REPT(event)) {
+      AUDIO_KEY_PRESS();
+    }
     storageDirty(i_flags & (EE_GENERAL|EE_MODEL));
     checkIncDec_Ret = (newval > val ? 1 : -1);
   }

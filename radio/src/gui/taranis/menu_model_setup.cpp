@@ -94,6 +94,7 @@ enum menuModelSetupItems {
 #define FIELD_PROTOCOL_MAX 1
 
 #define MODEL_SETUP_2ND_COLUMN        (LCD_W-17*FW-MENUS_SCROLLBAR_WIDTH-1)
+#define MODEL_SETUP_3RD_COLUMN        (MODEL_SETUP_2ND_COLUMN+6*FW)
 #define MODEL_SETUP_BIND_OFS          3*FW-2
 #define MODEL_SETUP_RANGE_OFS         7*FW
 #define MODEL_SETUP_SET_FAILSAFE_OFS  10*FW-2
@@ -126,8 +127,8 @@ void editTimerMode(int timerIdx, coord_t y, LcdFlags attr, uint8_t event)
   TimerData * timer = &g_model.timers[timerIdx];
   drawStringWithIndex(0*FW, y, STR_TIMER, timerIdx+1);
   putsTimerMode(MODEL_SETUP_2ND_COLUMN, y, timer->mode, menuHorizontalPosition==0 ? attr : 0);
-  putsTimer(MODEL_SETUP_2ND_COLUMN+5*FW-2+5*FWNUM+1, y, timer->start, menuHorizontalPosition==1 ? attr|TIMEHOUR : TIMEHOUR, menuHorizontalPosition==2 ? attr|TIMEHOUR : TIMEHOUR);
-  if (attr && menuHorizontalPosition < 0) lcdDrawFilledRect(MODEL_SETUP_2ND_COLUMN-1, y-1, 11*FW, FH+1);
+  putsTimer(MODEL_SETUP_3RD_COLUMN+5*FWNUM+2, y, timer->start, menuHorizontalPosition==1 ? attr|TIMEHOUR : TIMEHOUR, menuHorizontalPosition==2 ? attr|TIMEHOUR : TIMEHOUR);
+  if (attr && menuHorizontalPosition < 0) lcdDrawFilledRect(MODEL_SETUP_2ND_COLUMN-1, y-1, 13*FW-3, FH+1);
   if (attr && s_editMode>0) {
     div_t qr = div(timer->start, 60);
     switch (menuHorizontalPosition) {
@@ -324,7 +325,22 @@ void menuModelSetup(uint8_t event)
         break;
 
       case ITEM_MODEL_TIMER1_COUNTDOWN_BEEP:
-        g_model.timers[0].countdownBeep = selectMenuItem(MODEL_SETUP_2ND_COLUMN, y, STR_BEEPCOUNTDOWN, STR_VBEEPCOUNTDOWN, g_model.timers[0].countdownBeep, COUNTDOWN_SILENT, COUNTDOWN_COUNT-1, attr, event);
+        lcd_putsLeft(y, STR_BEEPCOUNTDOWN);
+        lcdDrawTextAtIndex(MODEL_SETUP_2ND_COLUMN, y, STR_VBEEPCOUNTDOWN, g_model.timers[0].countdownBeep, (menuHorizontalPosition==0 ? attr : 0));
+        if (g_model.timers[0].countdownBeep != COUNTDOWN_SILENT) {
+          lcdDrawNumber(MODEL_SETUP_3RD_COLUMN, y, TIMER_COUNTDOWN_START(0), (menuHorizontalPosition == 1 ? attr : 0) | LEFT);
+          lcdDrawChar(lcdLastPos, y, 's');
+        }
+        if (attr && s_editMode>0) {
+          switch (menuHorizontalPosition) {
+            case 0:
+              CHECK_INCDEC_MODELVAR(event, g_model.timers[0].countdownBeep, COUNTDOWN_SILENT, COUNTDOWN_COUNT-1);
+              break;
+            case 1:
+              g_model.timers[0].countdownStart = - checkIncDecModel(event, -g_model.timers[0].countdownStart, -1, +2);
+              break;
+          }
+        }
         break;
 
       case ITEM_MODEL_TIMER1_PERSISTENT:
@@ -635,7 +651,7 @@ void menuModelSetup(uint8_t event)
         lcd_putsLeft(y, STR_MODE);
         lcdDrawTextAtIndex(MODEL_SETUP_2ND_COLUMN, y, STR_TARANIS_PROTOCOLS, g_model.moduleData[INTERNAL_MODULE].type, menuHorizontalPosition==0 ? attr : 0);
         if (IS_MODULE_XJT(INTERNAL_MODULE))
-          lcdDrawTextAtIndex(MODEL_SETUP_2ND_COLUMN+5*FW, y, STR_XJT_PROTOCOLS, 1+g_model.moduleData[INTERNAL_MODULE].rfProtocol, menuHorizontalPosition==1 ? attr : 0);
+          lcdDrawTextAtIndex(MODEL_SETUP_3RD_COLUMN, y, STR_XJT_PROTOCOLS, 1+g_model.moduleData[INTERNAL_MODULE].rfProtocol, menuHorizontalPosition==1 ? attr : 0);
         if (attr && s_editMode>0) {
           switch (menuHorizontalPosition) {
             case 0:
@@ -683,13 +699,13 @@ void menuModelSetup(uint8_t event)
         lcd_putsLeft(y, STR_MODE);
         lcdDrawTextAtIndex(MODEL_SETUP_2ND_COLUMN, y, STR_TARANIS_PROTOCOLS, g_model.moduleData[EXTERNAL_MODULE].type, menuHorizontalPosition==0 ? attr : 0);
         if (IS_MODULE_XJT(EXTERNAL_MODULE))
-          lcdDrawTextAtIndex(MODEL_SETUP_2ND_COLUMN+5*FW, y, STR_XJT_PROTOCOLS, 1+g_model.moduleData[EXTERNAL_MODULE].rfProtocol, menuHorizontalPosition==1 ? attr : 0);
+          lcdDrawTextAtIndex(MODEL_SETUP_3RD_COLUMN, y, STR_XJT_PROTOCOLS, 1+g_model.moduleData[EXTERNAL_MODULE].rfProtocol, menuHorizontalPosition==1 ? attr : 0);
         else if (IS_MODULE_DSM2(EXTERNAL_MODULE))
-          lcdDrawTextAtIndex(MODEL_SETUP_2ND_COLUMN+5*FW, y, STR_DSM_PROTOCOLS, g_model.moduleData[EXTERNAL_MODULE].rfProtocol, menuHorizontalPosition==1 ? attr : 0);
+          lcdDrawTextAtIndex(MODEL_SETUP_3RD_COLUMN, y, STR_DSM_PROTOCOLS, g_model.moduleData[EXTERNAL_MODULE].rfProtocol, menuHorizontalPosition==1 ? attr : 0);
 #if defined(MULTIMODULE)
         else if (IS_MODULE_MULTIMODULE(EXTERNAL_MODULE)) {
           int8_t multi_rfProto = min(g_model.moduleData[EXTERNAL_MODULE].multi.rfProtocol, (uint8_t) MM_RF_PROTO_CUSTOM);
-          lcdDrawTextAtIndex(MODEL_SETUP_2ND_COLUMN+5*FW, y, STR_MULTI_PROTOCOLS, multi_rfProto, menuHorizontalPosition==1 ? attr : 0);
+          lcdDrawTextAtIndex(MODEL_SETUP_3RD_COLUMN, y, STR_MULTI_PROTOCOLS, multi_rfProto, menuHorizontalPosition==1 ? attr : 0);
 
           switch(multi_rfProto) {
             case MM_RF_PROTO_FLYSKY:
@@ -955,8 +971,9 @@ void menuModelSetup(uint8_t event)
           }
           if (g_model.moduleData[moduleIdx].multi.rfProtocol != MM_RF_PROTO_DSM2) {
             lcdDrawNumber(MODEL_SETUP_2ND_COLUMN, y, g_model.moduleData[moduleIdx].multi.optionValue, LEFT | attr);
-            if (attr)
+            if (attr) {
               CHECK_INCDEC_MODELVAR(event, g_model.moduleData[moduleIdx].multi.optionValue, -128, 127);
+            }
           }
         }
 #endif

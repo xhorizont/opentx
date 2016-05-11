@@ -153,7 +153,7 @@ void evalTimers(int16_t throttle, uint8_t tick10ms)
         switch (timerState->state) {
           case TMR_RUNNING:
             if (timerStart && newTimerVal>=(tmrval_t)timerStart) {
-              AUDIO_TIMER_MINUTE(newTimerVal);
+              AUDIO_TIMER_ELAPSED(i);
               timerState->state = TMR_NEGATIVE;
               // TRACE("Timer[%d] negative", i);
             }
