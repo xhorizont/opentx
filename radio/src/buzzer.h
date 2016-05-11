@@ -84,7 +84,7 @@ inline void beep(uint8_t) { }
   #define AUDIO_ERROR()            beep(4)
   #define AUDIO_MIX_WARNING(x)     beep(1)
   #define AUDIO_POT_MIDDLE()       beep(2)
-  #define AUDIO_TIMER_COUNTDOWN(index, val)  beep(2)
+  #define AUDIO_TIMER_COUNTDOWN(idx, val)  beep(2)
   #define AUDIO_TIMER_ELAPSED(idx) beep(3)
   #define AUDIO_VARIO_UP()         _beep(1)
   #define AUDIO_VARIO_DOWN()       _beep(1)
