@@ -53,7 +53,8 @@ void initModelTimer(uint32_t idx, uint8_t mode, int16_t start = 0)
   g_model.timers[0].start = start;
   g_model.timers[0].countdownBeep = COUNTDOWN_SILENT;
   g_model.timers[0].minuteBeep = 0;
-  g_model.timers[0].spare = 0;
+  g_model.timers[0].countdownStart = 0;
+  g_model.timers[0].direction = 0;
 #if defined(CPUARM) || defined(CPUM2560)
   g_model.timers[0].persistent = 0;
   g_model.timers[0].value = 0;
