@@ -118,7 +118,9 @@ void audioDefevent(uint8_t e);
 #define AUDIO_INACTIVITY()       VOICE_AUDIO_BUZZER(PUSH_SYSTEM_PROMPT(AU_INACTIVITY), audioDefevent(AU_INACTIVITY), beep(3))
 #define AUDIO_ERROR_MESSAGE(e)   VOICE_AUDIO_BUZZER(PUSH_SYSTEM_PROMPT((e)), audioDefevent(AU_ERROR), beep(4))
 #define AUDIO_TIMER_MINUTE(t)    VOICE_AUDIO_BUZZER(playDuration(t), audioDefevent(AU_WARNING1), beep(2))
-#define AUDIO_TIMER_COUNTDOWN(t, val)  audioTimerCountdown(t, val)
+#define AUDIO_TIMER_COUNTDOWN(idx, val)  audioTimerCountdown(idx, val)
+#define AUDIO_TIMER_ELAPSED(idx) AUDIO_BUZZER(audioTimerCountdown(idx, 0), beep(3))
+
 //#define AUDIO_TIMER_30()         // VOICE_AUDIO_BUZZER(PUSH_SYSTEM_PROMPT(AU_TIMER_30), audioDefevent(AU_TIMER_30), { beepAgain=2; beep(2); })
 //#define AUDIO_TIMER_20()         // VOICE_AUDIO_BUZZER(PUSH_SYSTEM_PROMPT(AU_TIMER_20), audioDefevent(AU_TIMER_20), { beepAgain=1; beep(2); })
 //#define AUDIO_TIMER_LT10(m, x)   // AUDIO_BUZZER(audioDefevent(AU_TIMER_LT10), beep(2))

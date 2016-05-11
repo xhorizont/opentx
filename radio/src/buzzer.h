@@ -62,6 +62,7 @@ inline void beep(uint8_t) { }
     #define AUDIO_INACTIVITY()     PUSH_SYSTEM_PROMPT(AU_INACTIVITY)
     #define AUDIO_ERROR_MESSAGE(e) PUSH_SYSTEM_PROMPT((e))
     #define AUDIO_TIMER_MINUTE(t)  playDuration(t)
+    // TODO
     #define AUDIO_TIMER_30()       PUSH_SYSTEM_PROMPT(AU_TIMER_30)
     #define AUDIO_TIMER_20()       PUSH_SYSTEM_PROMPT(AU_TIMER_20)
   #else
@@ -71,6 +72,7 @@ inline void beep(uint8_t) { }
     #define AUDIO_INACTIVITY()     beep(3)
     #define AUDIO_ERROR_MESSAGE(e) beep(4)
     #define AUDIO_TIMER_MINUTE(t)  beep(2)
+    // TODO
     #define AUDIO_TIMER_30()       { beepAgain=2; beep(2); }
     #define AUDIO_TIMER_20()       { beepAgain=1; beep(2); }
   #endif
@@ -83,7 +85,7 @@ inline void beep(uint8_t) { }
   #define AUDIO_MIX_WARNING(x)     beep(1)
   #define AUDIO_POT_MIDDLE()       beep(2)
   #define AUDIO_TIMER_COUNTDOWN(index, val)  beep(2)
-  #define AUDIO_TIMER_00(m)        beep(3)
+  #define AUDIO_TIMER_ELAPSED(idx) beep(3)
   #define AUDIO_VARIO_UP()         _beep(1)
   #define AUDIO_VARIO_DOWN()       _beep(1)
   #define AUDIO_TRIM_PRESS(f)      { if (!IS_KEY_FIRST(event)) warble = true; beep(1); }
