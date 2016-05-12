@@ -3,12 +3,12 @@ sudo: required
 dist: trusty
 
 before_install:
-  - sudo apt-get remove cmake cmake-data --yes
-  - sudo add-apt-repository ppa:george-edison55/precise-backports --yes
+#  - sudo apt-get remove cmake cmake-data --yes
+#  - sudo add-apt-repository ppa:george-edison55/precise-backports --yes
   - sudo add-apt-repository ppa:terry.guo/gcc-arm-embedded --yes
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test --yes
-  - sudo add-apt-repository ppa:beineri/opt-qt551 --yes
-  - sudo add-apt-repository 'deb http://llvm.org/apt/precise/ llvm-toolchain-precise main' --yes
+ # - sudo add-apt-repository ppa:ubuntu-toolchain-r/test --yes
+#  - sudo add-apt-repository ppa:beineri/opt-qt551 --yes
+  - sudo add-apt-repository 'deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty main' --yes
   - wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key | sudo apt-key add -
   - sudo apt-get update -qq
 
