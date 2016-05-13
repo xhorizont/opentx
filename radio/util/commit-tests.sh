@@ -11,7 +11,7 @@ cd -
 mkdir build || true
 cd build 
 
-COMMON_OPTIONS="-DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/opt/qt55"
+COMMON_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
 
 # Companion
 rm -rf *
