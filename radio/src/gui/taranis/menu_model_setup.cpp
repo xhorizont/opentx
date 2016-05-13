@@ -742,8 +742,8 @@ void menuModelSetup(uint8_t event)
               lcdDrawTextAtIndex(MODEL_SETUP_2ND_COLUMN+11*FW, y, STR_SUBTYPE_MJXQ, g_model.moduleData[EXTERNAL_MODULE].subType, menuHorizontalPosition==2 ? attr : 0);
               break;
             case MM_RF_PROTO_CUSTOM:
-              lcdDrawNumber(MODEL_SETUP_2ND_COLUMN+14*FW, y, g_model.moduleData[EXTERNAL_MODULE].multi.rfProtocol & 0x1f, menuHorizontalPosition==2 ? attr : 0, 2);
-              lcdDrawNumber(MODEL_SETUP_2ND_COLUMN+16*FW, y, g_model.moduleData[EXTERNAL_MODULE].subType, menuHorizontalPosition==3 ? attr : 0, 2);
+              lcdDrawNumber(MODEL_SETUP_2ND_COLUMN+14*FW, y, g_model.moduleData[EXTERNAL_MODULE].multi.rfProtocol & 0x1f, RIGHT | (menuHorizontalPosition==2 ? attr : 0), 2);
+              lcdDrawNumber(MODEL_SETUP_2ND_COLUMN+16*FW, y, g_model.moduleData[EXTERNAL_MODULE].subType, RIGHT | (menuHorizontalPosition==3 ? attr : 0), 2);
               break;
           }
         }
@@ -859,10 +859,10 @@ void menuModelSetup(uint8_t event)
         ModuleData & moduleData = g_model.moduleData[moduleIdx];
         if (IS_MODULE_PPM(moduleIdx)) {
           lcd_putsLeft(y, STR_PPMFRAME);
-          lcdDrawText(MODEL_SETUP_2ND_COLUMN+3*FW, y, STR_MS);
-          lcdDrawNumber(MODEL_SETUP_2ND_COLUMN, y, (int16_t)moduleData.ppm.frameLength*5 + 225, (menuHorizontalPosition<=0 ? attr : 0) | PREC1|LEFT);
+          lcdDrawNumber(MODEL_SETUP_2ND_COLUMN, y, (int16_t)moduleData.ppm.frameLength*5 + 225, LEFT | PREC1 | (menuHorizontalPosition<=0 ? attr : 0));
+          lcdDrawText(lcdLastPos, y, STR_MS);
+          lcdDrawNumber(MODEL_SETUP_2ND_COLUMN+8*FW+2, y, (moduleData.ppm.delay*50)+300, RIGHT | ((CURSOR_ON_LINE() || menuHorizontalPosition==1) ? attr : 0));
           lcdDrawChar(MODEL_SETUP_2ND_COLUMN+8*FW+2, y, 'u');
-          lcdDrawNumber(MODEL_SETUP_2ND_COLUMN+8*FW+2, y, (moduleData.ppm.delay*50)+300, (CURSOR_ON_LINE() || menuHorizontalPosition==1) ? attr : 0);
           lcdDrawChar(MODEL_SETUP_2ND_COLUMN+10*FW, y, moduleData.ppm.pulsePol ? '+' : '-', (CURSOR_ON_LINE() || menuHorizontalPosition==2) ? attr : 0);
 
           if (attr && s_editMode>0) {
@@ -891,7 +891,7 @@ void menuModelSetup(uint8_t event)
             lcd_putsLeft(y, STR_RXNUM);
           }
           if (IS_MODULE_XJT(moduleIdx) || IS_MODULE_DSM2(moduleIdx) || IS_MODULE_MULTIMODULE(moduleIdx)) {
-            if (xOffsetBind) lcdDrawNumber(MODEL_SETUP_2ND_COLUMN, y, g_model.header.modelId[moduleIdx], (l_posHorz==0 ? attr : 0) | LEADING0|LEFT, 2);
+            if (xOffsetBind) lcdDrawNumber(MODEL_SETUP_2ND_COLUMN, y, g_model.header.modelId[moduleIdx], LEFT | LEADING0 | (l_posHorz==0 ? attr : 0), 2);
             if (attr && l_posHorz==0) {
               if (s_editMode>0) {
                 CHECK_INCDEC_MODELVAR_ZERO(event, g_model.header.modelId[moduleIdx],
@@ -993,7 +993,7 @@ void menuModelSetup(uint8_t event)
 #if defined(PXX)
   if (IS_RANGECHECK_ENABLE()) {
     displayPopup("RSSI: ");
-    lcdDrawNumber(16+4*FW, 5*FH, TELEMETRY_RSSI(), BOLD);
+    lcdDrawNumber(16+4*FW, 5*FH, TELEMETRY_RSSI(), RIGHT | BOLD);
   }
 #endif
 }
@@ -1105,11 +1105,11 @@ void menuModelFailsafe(uint8_t event)
         }
         else {
 #if defined(PPM_UNIT_US)
-          lcdDrawNumber(x+COL_W-4-wbar-ofs, y, PPM_CH_CENTER(ch)+failsafeValue/2, flags);
+          lcdDrawNumber(x+COL_W-4-wbar-ofs, y, PPM_CH_CENTER(ch)+failsafeValue/2, RIGHT | flags);
 #elif defined(PPM_UNIT_PERCENT_PREC1)
-          lcdDrawNumber(x+COL_W-4-wbar-ofs, y, calcRESXto1000(failsafeValue), PREC1|flags);
+          lcdDrawNumber(x+COL_W-4-wbar-ofs, y, calcRESXto1000(failsafeValue), RIGHT | PREC1 | flags);
 #else
-          lcdDrawNumber(x+COL_W-4-wbar-ofs, y, calcRESXto1000(failsafeValue)/10, flags);
+          lcdDrawNumber(x+COL_W-4-wbar-ofs, y, calcRESXto1000(failsafeValue)/10, RIGHT | flags);
 #endif
         }
 

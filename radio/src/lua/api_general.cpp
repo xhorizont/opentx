@@ -830,6 +830,7 @@ const luaR_value_entry opentxConstants[] = {
   { "FIXEDWIDTH", FIXEDWIDTH },
 #endif
   { "LEFT", LEFT },
+  { "RIGHT", RIGHT },
   { "PREC1", PREC1 },
   { "PREC2", PREC2 },
   { "VALUE", 0 }, // TODO reuse ZoneOption::Integer

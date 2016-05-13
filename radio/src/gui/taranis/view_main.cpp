@@ -129,7 +129,7 @@ void displayTrims(uint8_t phase)
       }
       if (g_model.displayTrims != DISPLAY_TRIMS_NEVER && trim != 0) {
         if (g_model.displayTrims == DISPLAY_TRIMS_ALWAYS || (trimsDisplayTimer > 0 && (trimsDisplayMask & (1<<i)))) {
-          lcdDrawNumber(trim>0 ? 22 : 54, xm-2, -abs(trim), TINSIZE|VERTICAL);
+          lcdDrawNumber(trim>0 ? 22 : 54, xm-2, -abs(trim), RIGHT|TINSIZE|VERTICAL);
         }
       }
     }
@@ -151,7 +151,7 @@ void displayTrims(uint8_t phase)
       }
       if (g_model.displayTrims != DISPLAY_TRIMS_NEVER && trim != 0) {
         if (g_model.displayTrims == DISPLAY_TRIMS_ALWAYS || (trimsDisplayTimer > 0 && (trimsDisplayMask & (1<<i)))) {
-          lcdDrawNumber((stickIndex==0 ? TRIM_LH_X : TRIM_RH_X)+(trim>0 ? -11 : 20), ym-2, -abs(trim), TINSIZE);
+          lcdDrawNumber((stickIndex==0 ? TRIM_LH_X : TRIM_RH_X)+(trim>0 ? -11 : 20), ym-2, -abs(trim), RIGHT|TINSIZE);
         }
       }
     }

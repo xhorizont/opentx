@@ -93,10 +93,6 @@ void lcdPutPattern(coord_t x, coord_t y, const uint8_t * pattern, uint8_t width,
             continue;
           }
         }
-        if ((flags & CONDENSED) && i==2) {
-          /*condense the letter by skipping column 3 */
-          continue;
-        }
       }
 
       for (int8_t j=-1; j<=height; j++) {
@@ -129,7 +125,7 @@ void lcdPutPattern(coord_t x, coord_t y, const uint8_t * pattern, uint8_t width,
 
 void lcdDrawChar(coord_t x, coord_t y, const unsigned char c, LcdFlags flags)
 {
-  const pm_uchar * q;
+  const uint8_t * q;
 
   lcdNextPos = x-1;
 
@@ -179,12 +175,10 @@ void lcdDrawChar(coord_t x, coord_t y, const unsigned char c, LcdFlags flags)
     q = &font_3x5[((uint16_t)c-0x20)*3];
     lcdPutPattern(x, y, q, 3, 5, flags);
   }
-#if defined(BOLD_FONT)
   else if (flags & BOLD) {
     q = &font_5x7_B[c_remapped*5];
     lcdPutPattern(x, y, q, 5, 7, flags);
   }
-#endif
   else
 #endif
   {
@@ -202,7 +196,7 @@ void lcdDrawChar(coord_t x, coord_t y, const unsigned char c)
   lcdDrawChar(x, y, c, 0);
 }
 
-void lcdDrawSizedText(coord_t x, coord_t y, const pm_char * s, uint8_t len, LcdFlags flags)
+void lcdDrawSizedText(coord_t x, coord_t y, const char * s, uint8_t len, LcdFlags flags)
 {
   const coord_t orig_x = x;
   const uint8_t orig_len = len;
@@ -285,13 +279,11 @@ void lcdDrawTextAtIndex(coord_t x, coord_t y, const pm_char * s,uint8_t idx, Lcd
 
 void lcdDrawHexNumber(coord_t x, coord_t y, uint32_t val, LcdFlags flags)
 {
-  x += FWNUM*4+1;
-  for (int i=0; i<4; i++) {
-    x -= FWNUM;
-    char c = val & 0xf;
+  for (int i=12; i>=0; i-=4) {
+    char c = (val >> i) & 0xf;
     c = c>9 ? c+'A'-10 : c+'0';
-    lcdDrawChar(x, y, c, flags|(c>='A' ? CONDENSED : 0));
-    val >>= 4;
+    lcdDrawChar(x, y, c, flags);
+    x = lcdNextPos;
   }
 }
 
@@ -313,10 +305,7 @@ void lcdDrawNumber(coord_t x, coord_t y, int32_t val, LcdFlags flags, uint8_t le
   bool tinsize = (fontsize == TINSIZE);
 
   bool neg = false;
-  if (flags & UNSIGN) {
-    flags -= UNSIGN;
-  }
-  else if (val < 0) {
+  if (val < 0) {
     neg = true;
     val = -val;
   }
@@ -349,16 +338,14 @@ void lcdDrawNumber(coord_t x, coord_t y, int32_t val, LcdFlags flags, uint8_t le
     fw -= 1;
   }
   else {
-    if (flags & LEFT) {
+    if (!(flags & RIGHT)) {
       if (mode > 0)
         x += 2;
     }
-#if defined(BOLD_FONT)
     if (flags & BOLD) fw += 1;
-#endif
   }
 
-  if (flags & LEFT) {
+  if (!(flags & RIGHT)) {
     x += len * fw;
     if (neg) {
       x += ((xxlsize|dblsize|midsize) ? 7 : FWNUM);
@@ -375,7 +362,6 @@ void lcdDrawNumber(coord_t x, coord_t y, int32_t val, LcdFlags flags, uint8_t le
     LcdFlags f = flags;
     lcdDrawChar(x, y, c, f);
     if (mode == i) {
-      flags &= ~PREC2; // TODO not needed but removes 20bytes, could be improved for sure, check asm
       if (dblsize) {
         xn = x - 2;
         if (c>='2' && c<='3') ln++;
@@ -419,9 +405,7 @@ void lcdDrawNumber(coord_t x, coord_t y, int32_t val, LcdFlags flags, uint8_t le
     }
     val = qr.quot;
     x -= fw;
-#if defined(BOLD_FONT) && !defined(CPUM64) || defined(EXTSTD)
     if (i==len && (flags & BOLD)) x += 1;
-#endif
   }
 
   if (xn) {
@@ -548,7 +532,8 @@ void putsTimer(coord_t x, coord_t y, putstime_t tme, LcdFlags att, LcdFlags att2
 {
   div_t qr;
 
-  if (!(att & LEFT)) {
+  if (att & RIGHT) {
+    att -= RIGHT;
     if (att & DBLSIZE)
       x -= 5*(2*FWNUM)-4;
     else if (att & MIDSIZE)
@@ -568,7 +553,7 @@ void putsTimer(coord_t x, coord_t y, putstime_t tme, LcdFlags att, LcdFlags att2
   if (att & TIMEHOUR) {
     div_t qr2 = div(qr.quot, 60);
     lcdDrawNumber(x, y, qr2.quot, att|LEADING0|LEFT, 2);
-    lcdDrawChar(lcdLastPos, y, separator, att&att2);
+    lcdDrawChar(lcdLastPos, y, separator, att);
     qr.quot = qr2.rem;
     if (att & MIDSIZE)
       x += 17;
@@ -577,12 +562,13 @@ void putsTimer(coord_t x, coord_t y, putstime_t tme, LcdFlags att, LcdFlags att2
     else
       x += 13;
   }
+
   lcdDrawNumber(x, y, qr.quot, att|LEADING0|LEFT, 2);
   if (att & TIMEBLINK)
     lcdDrawChar(lcdLastPos, y, separator, BLINK);
   else
     lcdDrawChar(lcdLastPos, y, separator, att&att2);
-  lcdDrawNumber(lcdNextPos, y, qr.rem, att2|LEADING0|LEFT, 2);
+  lcdDrawNumber(lcdNextPos, y, qr.rem, (att2|LEADING0) & (~RIGHT), 2);
 }
 
 // TODO to be optimized with putsValueWithUnit
@@ -765,10 +751,8 @@ void putsSwitches(coord_t x, coord_t y, int32_t idx, LcdFlags att)
 #if defined(FLIGHT_MODES)
 void putsFlightMode(coord_t x, coord_t y, int8_t idx, LcdFlags att)
 {
-  if (idx==0) { lcdDrawTextAtIndex(x, y, STR_MMMINV, 0, att); return; }
-  if (idx < 0) { lcdDrawChar(x-2, y, '!', att); idx = -idx; }
-  if (att & CONDENSED)
-    lcdDrawNumber(x+FW*1, y, idx-1, (att & ~CONDENSED), 1);
+  if (idx==0)
+    lcdDrawTextAtIndex(x, y, STR_MMMINV, 0, att);
   else
     drawStringWithIndex(x, y, STR_FP, idx-1, att);
 }
