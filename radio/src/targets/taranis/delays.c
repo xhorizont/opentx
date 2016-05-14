@@ -25,22 +25,19 @@ void delaysInit(void)
   // Timer13
   RCC->APB1ENR |= RCC_APB1ENR_TIM13EN;           // Enable clock
   TIM13->PSC = (PERI1_FREQUENCY * TIMER_MULT_APB1) / 10000000 - 1;      // 0.1uS 
-  // TIM13->CCER = 0;
   TIM13->ARR = 0xFFFF;
-  // TIM13->CR1 = TIM_CR1_UDIS;
   TIM13->DIER = 0;
-  TIM13->EGR = TIM_EGR_UG;  // generate update event
+  TIM13->EGR = TIM_EGR_UG;    // generate update event
 }
 	
 void delay_01us(uint16_t nb)
 {
-  TIM13->EGR = TIM_EGR_UG;  // generate update event
   TIM13->SR &= ~TIM_SR_CC1IF; // clear CC flag
-  TIM13->CCR1 = nb; // set CC value
+  TIM13->CCR1 = nb;           // set CC value
+  TIM13->EGR = TIM_EGR_UG;    // generate update event
   TIM13->CR1 |= TIM_CR1_CEN;  // start timer
-  // TIM13->CNT = 0;  already reset by update event
   while((TIM13->SR & TIM_SR_CC1IF) == 0);
-  TIM13->CR1 &= ~TIM_CR1_CEN;   // stop timer
+  TIM13->CR1 &= ~TIM_CR1_CEN; // stop timer
 }
 
 void delay(uint32_t ms)
