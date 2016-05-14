@@ -181,7 +181,7 @@ void boardInit()
   DEBUG_TIMER_STOP(debugTimerDelay1ms);
 
   DEBUG_TIMER_START(debugTimerDelay2ms);
-  delay_01us(20000);
+  delay_ms(2);
   DEBUG_TIMER_STOP(debugTimerDelay2ms);
 
 }

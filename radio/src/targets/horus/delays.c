@@ -26,13 +26,12 @@ void delaysInit(void)
   RCC->APB1ENR |= RCC_APB1ENR_TIM13EN;           // Enable clock
   TIM13->PSC = (PERI1_FREQUENCY * TIMER_MULT_APB1) / 10000000 - 1;      // 0.1uS 
   TIM13->ARR = 0xFFFF;
-  TIM13->DIER = 0;
   TIM13->EGR = TIM_EGR_UG;    // generate update event
 }
-  
+
 void delay_01us(uint16_t nb)
 {
-  TIM13->EGR = TIM_EGR_UG;    // generate update event
+  TIM13->EGR = TIM_EGR_UG;    // generate update event (this also resets counter)
   TIM13->SR &= ~TIM_SR_CC1IF; // clear CC flag
   TIM13->CCR1 = nb;           // set CC value
   TIM13->CR1 |= TIM_CR1_CEN;  // start timer
@@ -44,6 +43,6 @@ void delay_ms(uint16_t nb)
 {
   uint16_t i;
   for (i=0; i<nb; i++) {
-    delay_01us(10000);
+    delay_01us(10500);    // delay adjusted for the fact that ideal prescaler would be 8.4 but 8 is used
   }
 }
