@@ -15,7 +15,8 @@ before_install:
 
 install:
   - sudo apt-get install -y xvfb lcov cmake cmake-data bc curl gcc-arm-none-eabi qt5-default qtmultimedia5-dev qttools5-dev qttools5-dev-tools libxerces-c-dev xsdcxx libsdl1.2-dev libusb-1.0-0 libfox-1.6-dev libgtest-dev python-clang-3.9 libclang-3.9-dev python3-pyqt5
-#  - export CXX="g++-5" CC="gcc-5"
+  - sudo apt-get install -y python-qt4 
+# - export CXX="g++-5" CC="gcc-5"
   - wget --quiet http://firmware.ardupilot.org/Tools/Travis/gcc-avr_1%253a4.8-2.1_amd64.deb
   - wget --quiet http://firmware.ardupilot.org/Tools/Travis/libmpfr4_3.1.2-1_amd64.deb
   - wget --quiet http://firmware.ardupilot.org/Tools/Travis/avr-libc_1%253a1.8.0-4.1_all.deb
