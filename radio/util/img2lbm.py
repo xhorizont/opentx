@@ -3,9 +3,12 @@
 from __future__ import division, print_function
 
 import sys
+print(sys.version)
+import traceback
 try:
     from PyQt5 import Qt, QtGui
 except:
+    traceback.print_exc(file=sys.stdout)
     from PyQt4 import Qt, QtGui
 
 image = QtGui.QImage(sys.argv[1])
