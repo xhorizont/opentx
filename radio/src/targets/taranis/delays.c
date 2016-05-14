@@ -27,7 +27,7 @@ void delaysInit(void)
   TIM13->PSC = (PERI1_FREQUENCY * TIMER_MULT_APB1) / 10000000 - 1;      // 0.1uS 
   // TIM13->CCER = 0;
   TIM13->ARR = 0xFFFF;
-  TIM13->CR1 = TIM_CR1_UDIS;
+  // TIM13->CR1 = TIM_CR1_UDIS;
   TIM13->DIER = 0;
   TIM13->EGR = TIM_EGR_UG;  // generate update event
 }
