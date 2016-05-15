@@ -223,6 +223,8 @@ const char * debugTimerNames[DEBUG_TIMERS_COUNT] = {
   ,"ADC read   "   // debugTimerAdcRead,
   ,"mix-pulses "   // debugTimerMixerCalcToUsage
   ,"mix-int.   "   // debugTimerMixerIterval
+  ,"delay 1ms  "   // debugTimerDelay1ms
+  ,"delay 2ms  "   // debugTimerDelay2ms
 };
 
 #endif
