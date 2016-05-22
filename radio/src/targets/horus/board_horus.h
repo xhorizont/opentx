@@ -206,23 +206,23 @@ extern uint32_t powerupReason;
 #define DIRTY_SHUTDOWN                        0xCAFEDEAD
 #define NORMAL_POWER_OFF                      ~DIRTY_SHUTDOWN
 #if defined(SIMU)
-#define WAS_RESET_BY_WATCHDOG()               (false)
-#define WAS_RESET_BY_SOFTWARE()               (false)
-#define WAS_RESET_BY_WATCHDOG_OR_SOFTWARE()   (false)
+  #define WAS_RESET_BY_WATCHDOG()               (false)
+  #define WAS_RESET_BY_SOFTWARE()               (false)
+  #define WAS_RESET_BY_WATCHDOG_OR_SOFTWARE()   (false)
 #else
-#define wdt_disable()
-void watchdogInit(unsigned int duration);
-#if defined(WATCHDOG_DISABLED)
-  #define wdt_enable(x)
-  #define wdt_reset()
-#else
-  #define wdt_enable(x)                       watchdogInit(x)
-  #define wdt_reset()                         IWDG->KR = 0xAAAA
-#endif
-#define WAS_RESET_BY_WATCHDOG()               (RCC->CSR & (RCC_CSR_WDGRSTF | RCC_CSR_WWDGRSTF))
-#define WAS_RESET_BY_SOFTWARE()               (RCC->CSR & RCC_CSR_SFTRSTF)
-#define UNREQUESTED_SHUTDOWN()                (shutdownRequest != SHUTDOWN_REQUEST)
-#define WAS_RESET_BY_WATCHDOG_OR_SOFTWARE()   (RCC->CSR & (RCC_CSR_WDGRSTF | RCC_CSR_WWDGRSTF | RCC_CSR_SFTRSTF))
+  #define wdt_disable()
+  void watchdogInit(unsigned int duration);
+  #if defined(WATCHDOG_DISABLED)
+    #define wdt_enable(x)
+    #define wdt_reset()
+  #else
+    #define wdt_enable(x)                       watchdogInit(x)
+    #define wdt_reset()                         IWDG->KR = 0xAAAA
+  #endif
+  #define WAS_RESET_BY_WATCHDOG()               (RCC->CSR & (RCC_CSR_WDGRSTF | RCC_CSR_WWDGRSTF))
+  #define WAS_RESET_BY_SOFTWARE()               (RCC->CSR & RCC_CSR_SFTRSTF)
+  #define UNREQUESTED_SHUTDOWN()                (shutdownRequest != SHUTDOWN_REQUEST)
+  #define WAS_RESET_BY_WATCHDOG_OR_SOFTWARE()   (RCC->CSR & (RCC_CSR_WDGRSTF | RCC_CSR_WWDGRSTF | RCC_CSR_SFTRSTF))
 #endif
 
 // ADC driver
@@ -262,7 +262,12 @@ void pwrOff(void);
 void pwrResetHandler(void);
 uint32_t pwrPressed(void);
 uint32_t pwrPressedDuration(void);
-#define UNEXPECTED_SHUTDOWN()   (powerupReason == DIRTY_SHUTDOWN)
+#if defined(SIMU)
+  #define UNEXPECTED_SHUTDOWN()                 (false)
+#else
+  #define UNEXPECTED_SHUTDOWN()                 (powerupReason == DIRTY_SHUTDOWN)
+#endif
+
 
 // Led driver
 void ledOff(void);
